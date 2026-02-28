@@ -1,0 +1,68 @@
+{
+	"configurations": [
+		{
+			"name": "Start App",
+			"runtimeVersion": "24",
+			"runtimeArgs": ["dev"],
+			"env": {
+				"BROWSER": "none"
+			},
+			"request": "launch",
+			"runtimeExecutable": "yarn",
+			"type": "node"
+		},
+		{
+			"type": "msedge",
+			"name": "Launch Microsoft Edge",
+			"request": "launch",
+			"url": "http://localhost:5173/",
+			"presentation": {
+				"hidden": true
+			}
+		},
+		{
+			"type": "vscode-edge-devtools.debug",
+			"name": "Open Edge DevTools",
+			"request": "attach",
+			"url": "http://localhost:5173/",
+			"presentation": {
+				"hidden": true
+			}
+		},
+		{
+			"name": "Launch Chrome",
+			"request": "launch",
+			"type": "chrome",
+			"url": "http://localhost:5173/",
+			"webRoot": "${workspaceFolder}"
+		},
+		{
+			"name": "Launch Firefox",
+			"request": "launch",
+			"type": "firefox",
+			"url": "http://localhost:5173/",
+			"webRoot": "${workspaceFolder}"
+		}
+	],
+	"compounds": [
+		{
+			"name": "Launch Edge and attach DevTools",
+			"configurations": [
+				"Start App",
+				"Launch Microsoft Edge",
+				"Open Edge DevTools"
+			],
+			"stopAll": true
+		},
+		{
+			"name": "Run Chrome",
+			"configurations": ["Start App", "Launch Chrome"],
+			"stopAll": true
+		},
+		{
+			"name": "Run Firefox",
+			"configurations": ["Start App", "Launch Firefox"],
+			"stopAll": true
+		}
+	]
+}
