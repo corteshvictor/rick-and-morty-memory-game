@@ -15,8 +15,10 @@
 	"author": "Victor Cortés",
 	"description": "React application that allows a user to authenticate and play a memory game with characters from Rick and Morty",
 	"dependencies": {
+		"@tailwindcss/vite": "4.2.1",
 		"react": "19.2.4",
-		"react-dom": "19.2.4"
+		"react-dom": "19.2.4",
+		"tailwindcss": "4.2.1"
 	},
 	"devDependencies": {
 		"@biomejs/biome": "2.4.4",
