@@ -1,4 +1,5 @@
 import { useNavigate } from "react-router";
+import { useAuthStore } from "@/auth";
 import { Button } from "@/shared/ui/Button";
 import { Modal } from "@/shared/ui/Modal";
 
@@ -10,6 +11,12 @@ interface GameOverModalProps {
 
 export function GameOverModal({ open, turns, onReplay }: GameOverModalProps) {
 	const navigate = useNavigate();
+	const signOut = useAuthStore((s) => s.signOut);
+
+	const handleGoHome = async () => {
+		await signOut();
+		navigate("/login");
+	};
 
 	return (
 		<Modal open={open}>
@@ -21,11 +28,11 @@ export function GameOverModal({ open, turns, onReplay }: GameOverModalProps) {
 				</p>
 				<div className="flex gap-4 w-full">
 					<Button onClick={onReplay} className="flex-1">
-						Jugar de nuevo
+						Repetir
 					</Button>
 					<Button
 						variant="secondary"
-						onClick={() => navigate("/")}
+						onClick={handleGoHome}
 						className="flex-1 !text-gray-700 !border-gray-300 hover:!bg-gray-100"
 					>
 						Inicio

@@ -15,6 +15,11 @@ export function useGame() {
 	} = useCharactersQuery(PAIR_COUNT);
 	const hasStarted = useRef(false);
 
+	useEffect(() => {
+		reset();
+		hasStarted.current = false;
+	}, [reset]);
+
 	const start = useCallback(() => {
 		if (!characters) return;
 		const board = generateBoard(characters);

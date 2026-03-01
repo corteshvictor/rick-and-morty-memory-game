@@ -9,7 +9,7 @@ interface GameBoardProps {
 
 export function GameBoard({ cards, onFlip, disabled }: GameBoardProps) {
 	return (
-		<div className="grid grid-cols-4 gap-3 max-w-2xl mx-auto p-4">
+		<div className="grid grid-cols-4 gap-3 w-full max-w-2xl mx-auto p-4">
 			{cards.map((card) => (
 				<GameCard
 					key={card.id}
