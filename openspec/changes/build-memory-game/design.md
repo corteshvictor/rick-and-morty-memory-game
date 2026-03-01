@@ -92,7 +92,7 @@ completed → idle (replay or go home)
 
 ### 6. Supabase client: Single instance in shared/infrastructure
 
-**Choice**: Create the Supabase client in `shared/infrastructure/supabase.ts` using env vars `VITE_SUPABASE_URL` and `VITE_SUPABASE_ANON_KEY`.
+**Choice**: Create the Supabase client in `shared/infrastructure/supabase.ts` using env vars `VITE_SUPABASE_URL` and `VITE_SUPABASE_PUBLISHABLE_DEFAULT_KEY`.
 
 **Why**: The Supabase client is cross-cutting (used by auth infrastructure). Placing it in `shared/infrastructure/` avoids duplicating the instance and keeps the auth slice's infrastructure layer focused on implementing the `AuthGateway` port.
 
