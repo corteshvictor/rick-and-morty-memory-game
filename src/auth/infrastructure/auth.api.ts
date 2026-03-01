@@ -44,11 +44,36 @@ export function createSupabaseAuthGateway(): AuthGateway {
 		async signInWithOAuth(
 			provider: OAuthProvider,
 		): Promise<{ error: string | null }> {
-			const { error } = await supabase.auth.signInWithOAuth({
+			const { data, error } = await supabase.auth.signInWithOAuth({
 				provider,
-				options: { redirectTo: `${window.location.origin}/game` },
+				options: {
+					redirectTo: `${window.location.origin}/game`,
+					skipBrowserRedirect: true,
+				},
 			});
 			if (error) return { error: error.message };
+			if (!data.url) return { error: "No se pudo iniciar la autenticación." };
+
+			try {
+				const res = await fetch(data.url);
+				if (!res.ok) {
+					const body = await res.json().catch(() => null);
+					const msg = body?.msg ?? body?.error_description;
+					if (msg?.includes("provider is not enabled")) {
+						return {
+							error: `El proveedor ${provider} no está habilitado. Configúralo en el dashboard de Supabase.`,
+						};
+					}
+					return { error: msg ?? `Error del proveedor (${res.status})` };
+				}
+			} catch (error) {
+				console.error(
+					"OAuth prefetch failed, proceeding with redirect:",
+					error,
+				);
+			}
+
+			window.location.href = data.url;
 			return { error: null };
 		},
 
