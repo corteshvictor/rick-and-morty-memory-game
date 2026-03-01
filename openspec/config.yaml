@@ -1,20 +1,48 @@
 schema: spec-driven
 
-# Project context (optional)
-# This is shown to AI when creating artifacts.
-# Add your tech stack, conventions, style guides, domain knowledge, etc.
-# Example:
-#   context: |
-#     Tech stack: TypeScript, React, Node.js
-#     We use conventional commits
-#     Domain: e-commerce platform
+context: |
+  Tech stack: React 19, TypeScript 5, Vite 7, Tailwind CSS 4 (no UI framework libs), pnpm
+  Code quality: Biome (linter/formatter), Husky, Commitlint (conventional commits), strict TypeScript
 
-# Per-artifact rules (optional)
-# Add custom rules for specific artifacts.
-# Example:
-#   rules:
-#     proposal:
-#       - Keep proposals under 500 words
-#       - Always include a "Non-goals" section
-#     tasks:
-#       - Break tasks into chunks of max 2 hours
+  Domain: Rick and Morty memory card game with token-based authentication
+  API: The Rick and Morty API — https://rickandmortyapi.com
+
+  Architecture:
+    - Hexagonal Architecture with three layers: domain, application, infrastructure
+    - Vertical Slicing: features organized by domain (auth/, game/), not by technical layer
+    - Screaming Architecture: folder structure communicates the business domain
+    - SOLID principles across all layers
+
+  Three layers within each feature slice:
+    - domain/          → Pure TypeScript: entities, business rules, port interfaces (zero framework deps)
+    - application/     → Use cases, React components, hooks, Zustand stores (orchestration + UI)
+    - infrastructure/  → API clients (TanStack Query), storage adapters, external services
+
+  Cross-cutting:
+    - shared/ui/             → Reusable UI primitives (Button, Input, Spinner, Modal)
+    - shared/infrastructure/ → HTTP client config, API base URL
+    - app/                   → Application shell: router, providers, layouts
+
+  State management: Zustand (one store per feature, in application/)
+  Server state & data fetching: TanStack Query (in infrastructure/)
+  Routing: React Router
+
+  Dependency rule:
+    - domain/ must NEVER import React, Zustand, TanStack Query, or browser APIs
+    - application/ imports from domain/, consumes infrastructure through port interfaces
+    - infrastructure/ implements port interfaces defined in domain/
+    - Cross-slice imports go through index.ts barrel exports only
+
+  Key features:
+    - Login screen with token-based authentication
+    - Memory game board with Rick and Morty character cards
+    - Card matching logic with turn and match counters
+    - Game completion screen with stats and replay/home options
+
+rules:
+  proposal:
+    - Keep proposals concise and focused on the single change being made
+    - Always include a "Non-goals" section
+  tasks:
+    - Break tasks into chunks of max 2 hours
+    - Each task should be independently testable
