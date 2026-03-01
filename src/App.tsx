@@ -1,20 +1,10 @@
-import { useState } from "react";
-import reactLogo from "./assets/react.svg";
+import { Providers } from "@/app/providers";
+import { AppRouter } from "@/app/router";
 
-function App() {
-	const [count, setCount] = useState(0);
-
+export default function App() {
 	return (
-		<>
-			<img src={reactLogo} className="logo react" alt="React logo" />
-			<h1>Vite + React</h1>
-			<div className="card">
-				<button type="button" onClick={() => setCount((count) => count + 1)}>
-					count is {count}
-				</button>
-			</div>
-		</>
+		<Providers>
+			<AppRouter />
+		</Providers>
 	);
 }
-
-export default App;

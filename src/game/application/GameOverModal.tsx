@@ -1,0 +1,37 @@
+import { useNavigate } from "react-router";
+import { Button } from "@/shared/ui/Button";
+import { Modal } from "@/shared/ui/Modal";
+
+interface GameOverModalProps {
+	open: boolean;
+	turns: number;
+	onReplay: () => void;
+}
+
+export function GameOverModal({ open, turns, onReplay }: GameOverModalProps) {
+	const navigate = useNavigate();
+
+	return (
+		<Modal open={open}>
+			<div className="flex flex-col items-center gap-6 text-center">
+				<h2 className="text-3xl font-bold text-gray-800">¡Felicitaciones!</h2>
+				<p className="text-gray-600 text-lg">
+					Completaste el juego en{" "}
+					<span className="font-bold text-green-600">{turns}</span> turnos
+				</p>
+				<div className="flex gap-4 w-full">
+					<Button onClick={onReplay} className="flex-1">
+						Jugar de nuevo
+					</Button>
+					<Button
+						variant="secondary"
+						onClick={() => navigate("/")}
+						className="flex-1 !text-gray-700 !border-gray-300 hover:!bg-gray-100"
+					>
+						Inicio
+					</Button>
+				</div>
+			</div>
+		</Modal>
+	);
+}
