@@ -68,7 +68,17 @@
 
 ## 11. Integration & Verification
 
-- [ ] 11.1 Verify full auth flow: sign up → logout → sign in → access game
-- [ ] 11.2 Verify OAuth flow: Google and GitHub login redirect and callback
-- [ ] 11.3 Verify game flow: preview → play → match all pairs → completion → replay
+- [x] 11.1 Verify full auth flow: sign up → logout → sign in → access game
+- [x] 11.2 Verify OAuth flow: Google and GitHub login redirect and callback
+- [x] 11.3 Verify game flow: preview → play → match all pairs → completion → replay
 - [x] 11.4 Run `pnpm lint` and `pnpm build` — zero errors
+
+## 12. Post-implementation Fixes
+
+- [x] 12.1 Fix lazy Supabase client initialization (`getSupabase()`) to prevent white screen without `.env`
+- [x] 12.2 Migrate `VITE_SUPABASE_ANON_KEY` → `VITE_SUPABASE_PUBLISHABLE_DEFAULT_KEY`
+- [x] 12.3 Fix auth store: update `user`/`status` on successful `signIn`/`signUp`/`signOut`
+- [x] 12.4 Fix a11y: Spinner `div role="status"` → `<output>`, GameCard `div role="button"` → `<button>`
+- [x] 12.5 Fix game board grid: add `w-full` to `GameBoard` grid container
+- [x] 12.6 Replace card back gradient with `card-back.webp` from Figma assets
+- [x] 12.7 Integrate Figma assets: `ricky_morty_logo.svg` in headers, `game-background.png` as game background

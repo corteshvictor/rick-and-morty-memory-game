@@ -6,6 +6,15 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 Rick and Morty memory card game with token-based authentication. Built with React 19, TypeScript 5, Vite 7, Tailwind CSS 4, and pnpm. The project uses spec-driven development — see `openspec/config.yaml` for the architectural specification.
 
+## Environment Setup
+
+Copy `.env.example` to `.env` and fill in the Supabase credentials:
+
+```
+VITE_SUPABASE_URL=
+VITE_SUPABASE_PUBLISHABLE_DEFAULT_KEY=
+```
+
 ## Commands
 
 ```bash
@@ -40,6 +49,18 @@ Cross-cutting code:
 
 `@/*` maps to `./src/*` (configured in both `vite.config.ts` and `tsconfig.app.json`). Use `@/game/domain/game-engine` style imports.
 
+## Key External Services
+
+- **Supabase** — Authentication backend (token-based auth). Client singleton in `shared/infrastructure/supabase.ts`.
+- **Rick and Morty API** (`https://rickandmortyapi.com`) — Character data for game cards, fetched via TanStack Query in `game/infrastructure/`.
+
+## Routes
+
+- `/login` — Login page (public)
+- `/signup` — Sign-up page (public)
+- `/game` — Game board (protected by `AuthGuard`)
+- `*` — Redirects to `/game` if authenticated, `/login` otherwise
+
 ## Code Style
 
 - **Biome** handles linting and formatting (not ESLint/Prettier)
@@ -47,6 +68,11 @@ Cross-cutting code:
 - Quotes: double quotes
 - Imports: use inline `type` keyword (`import { type Foo }`) — enforced by Biome's `useImportType` rule
 - Commits: conventional commits enforced by Commitlint + Husky (`feat:`, `fix:`, `chore:`, etc.)
+
+## Git Hooks
+
+- **pre-commit** — Runs `lint-staged` (Biome check + format on staged `*.{js,jsx,ts,tsx,cjs,mjs,json}` files)
+- **commit-msg** — Validates conventional commit format via Commitlint
 
 ## Requirements
 
