@@ -1,3 +1,4 @@
+import cardBackImg from "@/assets/images/card-back.webp";
 import { type Card } from "@/game/domain/card.model";
 
 interface GameCardProps {
@@ -27,8 +28,12 @@ export function GameCard({ card, onClick, disabled }: GameCardProps) {
 				className={`relative w-full h-full transition-transform duration-500 transform-3d ${isRevealed ? "rotate-y-180" : ""}`}
 			>
 				{/* Card back */}
-				<div className="absolute inset-0 backface-hidden rounded-xl bg-gradient-to-br from-teal-400 to-cyan-600 border-2 border-teal-300/50 flex items-center justify-center shadow-lg">
-					<span className="text-3xl font-bold text-white/80">?</span>
+				<div className="absolute inset-0 backface-hidden rounded-xl overflow-hidden shadow-lg">
+					<img
+						src={cardBackImg}
+						alt="Carta boca abajo"
+						className="w-full h-full object-cover"
+					/>
 				</div>
 
 				{/* Card front */}
