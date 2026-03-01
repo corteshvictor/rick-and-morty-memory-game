@@ -44,8 +44,8 @@ The system SHALL provide a `GameLayout` for the game page. The layout SHALL incl
 - **THEN** the page is rendered within the game layout with header, user info, and logout action
 
 ### Requirement: Environment variable configuration
-The system SHALL read `VITE_SUPABASE_URL` and `VITE_SUPABASE_ANON_KEY` from environment variables to initialize the Supabase client. A `.env.example` file SHALL document the required variables.
+The system SHALL read `VITE_SUPABASE_URL` and `VITE_SUPABASE_PUBLISHABLE_DEFAULT_KEY` from environment variables to initialize the Supabase client. A `.env.example` file SHALL document the required variables.
 
 #### Scenario: Missing environment variables
-- **WHEN** the application starts without `VITE_SUPABASE_URL` or `VITE_SUPABASE_ANON_KEY` defined
+- **WHEN** the application starts without `VITE_SUPABASE_URL` or `VITE_SUPABASE_PUBLISHABLE_DEFAULT_KEY` defined
 - **THEN** the Supabase client initialization fails and the application logs an error

@@ -39,4 +39,4 @@ _None — this is the initial build._
 - **New code**: `src/auth/`, `src/game/`, `src/shared/`, `src/app/` directories following hexagonal architecture
 - **Replaced code**: Current `src/App.tsx` Vite template replaced with app shell
 - **External services**: Supabase project (free tier) for auth, Rick and Morty API for character data
-- **Environment variables**: `VITE_SUPABASE_URL`, `VITE_SUPABASE_ANON_KEY`
+- **Environment variables**: `VITE_SUPABASE_URL`, `VITE_SUPABASE_PUBLISHABLE_DEFAULT_KEY`

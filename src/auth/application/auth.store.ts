@@ -35,6 +35,8 @@ export const useAuthStore = create<AuthState>((set) => ({
 		const result = await getGateway().signUp(credentials);
 		if (result.error) {
 			set({ error: result.error });
+		} else if (result.user) {
+			set({ user: result.user, status: "authenticated" });
 		}
 	},
 
@@ -43,6 +45,8 @@ export const useAuthStore = create<AuthState>((set) => ({
 		const result = await getGateway().signIn(credentials);
 		if (result.error) {
 			set({ error: result.error });
+		} else if (result.user) {
+			set({ user: result.user, status: "authenticated" });
 		}
 	},
 
@@ -58,6 +62,8 @@ export const useAuthStore = create<AuthState>((set) => ({
 		const result = await getGateway().signOut();
 		if (result.error) {
 			set({ error: result.error });
+		} else {
+			set({ user: null, status: "unauthenticated" });
 		}
 	},
 

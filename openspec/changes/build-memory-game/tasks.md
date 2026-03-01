@@ -1,7 +1,7 @@
 ## 1. Project Setup & Dependencies
 
 - [x] 1.1 Install runtime dependencies: `@supabase/supabase-js`, `zustand`, `@tanstack/react-query`, `react-router`
-- [x] 1.2 Create `.env.example` with `VITE_SUPABASE_URL` and `VITE_SUPABASE_ANON_KEY`
+- [x] 1.2 Create `.env.example` with `VITE_SUPABASE_URL` and `VITE_SUPABASE_PUBLISHABLE_DEFAULT_KEY`
 - [x] 1.3 Create folder structure: `src/app/`, `src/auth/`, `src/game/`, `src/shared/ui/`, `src/shared/infrastructure/`
 
 ## 2. Shared Infrastructure & UI Primitives
