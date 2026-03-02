@@ -1,4 +1,4 @@
-import { type FormEvent, useState } from "react";
+import { type SubmitEvent, useState } from "react";
 import { Link, Navigate } from "react-router";
 import { Button } from "@/shared/ui/Button";
 import { Input } from "@/shared/ui/Input";
@@ -14,7 +14,7 @@ export function SignUpPage() {
 		return <Navigate to="/game" replace />;
 	}
 
-	const handleSubmit = async (e: FormEvent) => {
+	const handleSubmit = async (e: SubmitEvent<HTMLFormElement>) => {
 		e.preventDefault();
 		setLoading(true);
 		await signUp({ email, password });

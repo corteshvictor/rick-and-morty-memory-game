@@ -21,7 +21,7 @@ interface AuthState {
 
 let gateway: AuthGateway | null = null;
 function getGateway(): AuthGateway {
-	if (!gateway) gateway = createSupabaseAuthGateway();
+	gateway ??= createSupabaseAuthGateway();
 	return gateway;
 }
 
