@@ -37,7 +37,7 @@ export function GamePage() {
 	}
 
 	return (
-		<div className="flex flex-col">
+		<div className="bg-amber-50 rounded-2xl p-6 shadow-lg">
 			<GameHeader matches={stats.matches} turns={stats.turns} />
 			<GameBoard cards={cards} onFlip={flipCard} disabled={isDisabled} />
 			<GameOverModal
