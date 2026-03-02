@@ -8,10 +8,19 @@ interface RickAndMortyApiCharacter {
 	id: number;
 	name: string;
 	image: string;
+	status: string;
+	species: string;
+}
+
+interface RickAndMortyApiInfo {
+	count: number;
+	pages: number;
+	next: string | null;
+	prev: string | null;
 }
 
 interface RickAndMortyApiResponse {
-	info: { count: number; pages: number };
+	info: RickAndMortyApiInfo;
 	results: RickAndMortyApiCharacter[];
 }
 
@@ -39,6 +48,8 @@ export function createCharacterApi(): CharacterRepository {
 				id: char.id,
 				name: char.name,
 				imageUrl: char.image,
+				characterStatus: char.status,
+				species: char.species,
 			}));
 		},
 	};
