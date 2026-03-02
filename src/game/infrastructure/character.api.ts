@@ -1,3 +1,4 @@
+import { envs } from "@/app/config/env";
 import {
 	type Character,
 	type CharacterRepository,
@@ -14,7 +15,7 @@ interface RickAndMortyApiResponse {
 	results: RickAndMortyApiCharacter[];
 }
 
-const API_BASE = "https://rickandmortyapi.com/api/character";
+const API_BASE = `${envs.RICK_AND_MORTY_API_URL}/character`;
 
 export function createCharacterApi(): CharacterRepository {
 	return {
