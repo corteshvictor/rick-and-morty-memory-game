@@ -3,7 +3,7 @@ interface GameHeaderProps {
 	turns: number;
 }
 
-export function GameHeader({ matches, turns }: GameHeaderProps) {
+export function GameHeader({ matches, turns }: Readonly<GameHeaderProps>) {
 	return (
 		<div className="flex justify-center gap-8 py-4">
 			<div className="text-center">

@@ -19,7 +19,7 @@ export function Button({
 	variant = "primary",
 	className = "",
 	...props
-}: ButtonProps) {
+}: Readonly<ButtonProps>) {
 	return (
 		<button
 			className={`transition-colors cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed ${variantClasses[variant]} ${className}`}

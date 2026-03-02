@@ -4,7 +4,7 @@ import logo from "@/assets/images/ricky_morty_logo.svg";
 import { useAuthStore } from "@/auth";
 import { Button } from "@/shared/ui/Button";
 
-export function GameLayout({ children }: { children: ReactNode }) {
+export function GameLayout({ children }: Readonly<{ children: ReactNode }>) {
 	const user = useAuthStore((s) => s.user);
 	const signOut = useAuthStore((s) => s.signOut);
 

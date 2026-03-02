@@ -14,7 +14,7 @@ export function Input({
 	type,
 	className = "",
 	...props
-}: InputProps) {
+}: Readonly<InputProps>) {
 	const [showPassword, setShowPassword] = useState(false);
 	const isPassword = type === "password";
 

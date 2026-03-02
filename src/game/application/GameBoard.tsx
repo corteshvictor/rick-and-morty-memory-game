@@ -7,7 +7,11 @@ interface GameBoardProps {
 	disabled: boolean;
 }
 
-export function GameBoard({ cards, onFlip, disabled }: GameBoardProps) {
+export function GameBoard({
+	cards,
+	onFlip,
+	disabled,
+}: Readonly<GameBoardProps>) {
 	return (
 		<div className="grid grid-cols-4 gap-3 w-full max-w-2xl mx-auto p-4">
 			{cards.map((card) => (

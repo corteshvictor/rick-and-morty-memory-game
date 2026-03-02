@@ -4,7 +4,7 @@ import { BrowserRouter } from "react-router";
 
 const queryClient = new QueryClient();
 
-export function Providers({ children }: { children: ReactNode }) {
+export function Providers({ children }: Readonly<{ children: ReactNode }>) {
 	return (
 		<QueryClientProvider client={queryClient}>
 			<BrowserRouter>{children}</BrowserRouter>

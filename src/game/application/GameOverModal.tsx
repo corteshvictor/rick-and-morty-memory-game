@@ -9,7 +9,11 @@ interface GameOverModalProps {
 	onReplay: () => void;
 }
 
-export function GameOverModal({ open, turns, onReplay }: GameOverModalProps) {
+export function GameOverModal({
+	open,
+	turns,
+	onReplay,
+}: Readonly<GameOverModalProps>) {
 	const navigate = useNavigate();
 	const signOut = useAuthStore((s) => s.signOut);
 

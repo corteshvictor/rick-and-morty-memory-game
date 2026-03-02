@@ -7,7 +7,7 @@ interface GameCardProps {
 	disabled: boolean;
 }
 
-export function GameCard({ card, onClick, disabled }: GameCardProps) {
+export function GameCard({ card, onClick, disabled }: Readonly<GameCardProps>) {
 	const isFaceUp = card.status === "faceUp";
 	const isMatched = card.status === "matched";
 	const isRevealed = isFaceUp || isMatched;

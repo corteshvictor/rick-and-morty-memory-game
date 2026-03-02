@@ -5,7 +5,7 @@ interface ModalProps {
 	children: ReactNode;
 }
 
-export function Modal({ open, children }: ModalProps) {
+export function Modal({ open, children }: Readonly<ModalProps>) {
 	if (!open) return null;
 
 	return (
