@@ -5,7 +5,7 @@ import { Input } from "@/shared/ui/Input";
 import { useAuthStore } from "./auth.store";
 
 export function SignUpPage() {
-	const { signUp, signInWithOAuth, error, status } = useAuthStore();
+	const { signUp, signInWithOAuth, status } = useAuthStore();
 	const [email, setEmail] = useState("");
 	const [password, setPassword] = useState("");
 	const [loading, setLoading] = useState(false);
@@ -42,8 +42,6 @@ export function SignUpPage() {
 				required
 				minLength={6}
 			/>
-
-			{error && <p className="text-red-400 text-sm text-center">{error}</p>}
 
 			<Button type="submit" disabled={loading}>
 				{loading ? "Creando cuenta..." : "Registrarse"}

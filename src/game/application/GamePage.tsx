@@ -1,4 +1,6 @@
+import { useEffect } from "react";
 import { Button } from "@/shared/ui/Button";
+import { notifyError } from "@/shared/ui/notifications";
 import { Spinner } from "@/shared/ui/Spinner";
 import { GameBoard } from "./GameBoard";
 import { GameHeader } from "./GameHeader";
@@ -12,11 +14,17 @@ export function GamePage() {
 		stats,
 		isLoading,
 		error,
+		errorUpdatedAt,
 		isDisabled,
 		flipCard,
 		replay,
 		retry,
 	} = useGame();
+
+	useEffect(() => {
+		if (!error || errorUpdatedAt <= 0) return;
+		notifyError({ message: error, title: "Error del juego" });
+	}, [error, errorUpdatedAt]);
 
 	if (isLoading) {
 		return (
@@ -30,7 +38,9 @@ export function GamePage() {
 	if (error) {
 		return (
 			<div className="flex flex-col items-center justify-center py-20 gap-4">
-				<p className="text-red-400">{error}</p>
+				<p className="text-white/70 text-sm">
+					No fue posible cargar el tablero.
+				</p>
 				<Button onClick={() => retry()}>Reintentar</Button>
 			</div>
 		);

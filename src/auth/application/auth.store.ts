@@ -7,6 +7,7 @@ import {
 } from "@/auth/domain/auth.model";
 import { type AuthGateway } from "@/auth/domain/auth.repository";
 import { createSupabaseAuthGateway } from "@/auth/infrastructure/auth.api";
+import { notifyError } from "@/shared/ui/notifications";
 
 interface AuthState {
 	user: AuthUser | null;
@@ -35,6 +36,7 @@ export const useAuthStore = create<AuthState>((set) => ({
 		const result = await getGateway().signUp(credentials);
 		if (result.error) {
 			set({ error: result.error });
+			notifyError({ message: result.error, title: "Error de registro" });
 		} else if (result.user) {
 			set({ user: result.user, status: "authenticated" });
 		}
@@ -45,6 +47,10 @@ export const useAuthStore = create<AuthState>((set) => ({
 		const result = await getGateway().signIn(credentials);
 		if (result.error) {
 			set({ error: result.error });
+			notifyError({
+				message: result.error,
+				title: "Error de inicio de sesión",
+			});
 		} else if (result.user) {
 			set({ user: result.user, status: "authenticated" });
 		}
@@ -55,6 +61,7 @@ export const useAuthStore = create<AuthState>((set) => ({
 		const result = await getGateway().signInWithOAuth(provider);
 		if (result.error) {
 			set({ error: result.error });
+			notifyError({ message: result.error, title: "Error de autenticación" });
 		}
 	},
 
@@ -62,6 +69,7 @@ export const useAuthStore = create<AuthState>((set) => ({
 		const result = await getGateway().signOut();
 		if (result.error) {
 			set({ error: result.error });
+			notifyError({ message: result.error, title: "Error al cerrar sesión" });
 		} else {
 			set({ user: null, status: "unauthenticated" });
 		}
