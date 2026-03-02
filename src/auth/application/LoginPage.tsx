@@ -1,11 +1,11 @@
-import { type FormEvent, useState } from "react";
+import { type SubmitEvent, useState } from "react";
 import { Link, Navigate } from "react-router";
 import { Button } from "@/shared/ui/Button";
 import { Input } from "@/shared/ui/Input";
 import { useAuthStore } from "./auth.store";
 
 export function LoginPage() {
-	const { signIn, signInWithOAuth, error, status } = useAuthStore();
+	const { signIn, signInWithOAuth, status } = useAuthStore();
 	const [email, setEmail] = useState("");
 	const [password, setPassword] = useState("");
 	const [loading, setLoading] = useState(false);
@@ -14,7 +14,7 @@ export function LoginPage() {
 		return <Navigate to="/game" replace />;
 	}
 
-	const handleSubmit = async (e: FormEvent) => {
+	const handleSubmit = async (e: SubmitEvent<HTMLFormElement>) => {
 		e.preventDefault();
 		setLoading(true);
 		await signIn({ email, password });
@@ -42,8 +42,6 @@ export function LoginPage() {
 				required
 				minLength={6}
 			/>
-
-			{error && <p className="text-red-400 text-sm text-center">{error}</p>}
 
 			<Button type="submit" disabled={loading}>
 				{loading ? "Ingresando..." : "Iniciar sesión"}

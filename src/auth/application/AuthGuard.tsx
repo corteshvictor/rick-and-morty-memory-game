@@ -3,7 +3,7 @@ import { Navigate } from "react-router";
 import { Spinner } from "@/shared/ui/Spinner";
 import { useAuthStore } from "./auth.store";
 
-export function AuthGuard({ children }: { children: ReactNode }) {
+export function AuthGuard({ children }: Readonly<{ children: ReactNode }>) {
 	const status = useAuthStore((s) => s.status);
 	const initialize = useAuthStore((s) => s.initialize);
 

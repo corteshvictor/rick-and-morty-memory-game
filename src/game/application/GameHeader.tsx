@@ -3,17 +3,15 @@ interface GameHeaderProps {
 	turns: number;
 }
 
-export function GameHeader({ matches, turns }: GameHeaderProps) {
+export function GameHeader({ matches, turns }: Readonly<GameHeaderProps>) {
 	return (
-		<div className="flex justify-center gap-8 py-4">
-			<div className="text-center">
-				<p className="text-sm text-white/60">Aciertos</p>
-				<p className="text-2xl font-bold text-green-400">{matches}</p>
-			</div>
-			<div className="text-center">
-				<p className="text-sm text-white/60">Turnos</p>
-				<p className="text-2xl font-bold text-white">{turns}</p>
-			</div>
+		<div className="flex justify-between items-center px-2 pb-4">
+			<p className="text-sm text-gray-700">
+				Aciertos: <span className="font-bold text-green-600">{matches}</span>
+			</p>
+			<p className="text-sm text-gray-700">
+				Turnos: <span className="font-bold text-gray-900">{turns}</span>
+			</p>
 		</div>
 	);
 }

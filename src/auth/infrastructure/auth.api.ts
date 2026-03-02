@@ -8,7 +8,7 @@ import {
 	type AuthGateway,
 	type AuthResult,
 } from "@/auth/domain/auth.repository";
-import { getSupabase } from "@/shared/infrastructure/supabase";
+import { supabase } from "@/shared/infrastructure/supabase";
 
 function mapUser(user: User | null): AuthUser | null {
 	if (!user) return null;
@@ -21,7 +21,6 @@ function mapUser(user: User | null): AuthUser | null {
 }
 
 export function createSupabaseAuthGateway(): AuthGateway {
-	const supabase = getSupabase();
 	return {
 		async signUp(credentials: Credentials): Promise<AuthResult> {
 			const { data, error } = await supabase.auth.signUp({
@@ -47,7 +46,7 @@ export function createSupabaseAuthGateway(): AuthGateway {
 			const { data, error } = await supabase.auth.signInWithOAuth({
 				provider,
 				options: {
-					redirectTo: `${window.location.origin}/game`,
+					redirectTo: `${globalThis.location.origin}/game`,
 					skipBrowserRedirect: true,
 				},
 			});
@@ -73,7 +72,7 @@ export function createSupabaseAuthGateway(): AuthGateway {
 				);
 			}
 
-			window.location.href = data.url;
+			globalThis.location.href = data.url;
 			return { error: null };
 		},
 

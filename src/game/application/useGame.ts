@@ -11,6 +11,7 @@ export function useGame() {
 		data: characters,
 		isLoading,
 		error,
+		errorUpdatedAt,
 		refetch,
 	} = useCharactersQuery(PAIR_COUNT);
 	const hasStarted = useRef(false);
@@ -52,6 +53,7 @@ export function useGame() {
 		stats,
 		isLoading,
 		error: error ? "Error al cargar personajes. Intenta de nuevo." : null,
+		errorUpdatedAt,
 		isDisabled,
 		flipCard,
 		replay,

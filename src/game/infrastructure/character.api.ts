@@ -1,3 +1,4 @@
+import { envs } from "@/app/config/env";
 import {
 	type Character,
 	type CharacterRepository,
@@ -7,14 +8,23 @@ interface RickAndMortyApiCharacter {
 	id: number;
 	name: string;
 	image: string;
+	status: string;
+	species: string;
+}
+
+interface RickAndMortyApiInfo {
+	count: number;
+	pages: number;
+	next: string | null;
+	prev: string | null;
 }
 
 interface RickAndMortyApiResponse {
-	info: { count: number; pages: number };
+	info: RickAndMortyApiInfo;
 	results: RickAndMortyApiCharacter[];
 }
 
-const API_BASE = "https://rickandmortyapi.com/api/character";
+const API_BASE = `${envs.RICK_AND_MORTY_API_URL}/character`;
 
 export function createCharacterApi(): CharacterRepository {
 	return {
@@ -38,6 +48,8 @@ export function createCharacterApi(): CharacterRepository {
 				id: char.id,
 				name: char.name,
 				imageUrl: char.image,
+				characterStatus: char.status,
+				species: char.species,
 			}));
 		},
 	};

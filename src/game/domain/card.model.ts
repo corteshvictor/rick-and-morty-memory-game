@@ -5,5 +5,7 @@ export interface Card {
 	pairId: string;
 	name: string;
 	imageUrl: string;
+	characterStatus: string;
+	species: string;
 	status: CardStatus;
 }

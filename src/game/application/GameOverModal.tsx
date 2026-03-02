@@ -9,7 +9,11 @@ interface GameOverModalProps {
 	onReplay: () => void;
 }
 
-export function GameOverModal({ open, turns, onReplay }: GameOverModalProps) {
+export function GameOverModal({
+	open,
+	turns,
+	onReplay,
+}: Readonly<GameOverModalProps>) {
 	const navigate = useNavigate();
 	const signOut = useAuthStore((s) => s.signOut);
 
@@ -30,11 +34,7 @@ export function GameOverModal({ open, turns, onReplay }: GameOverModalProps) {
 					<Button onClick={onReplay} className="flex-1">
 						Repetir
 					</Button>
-					<Button
-						variant="secondary"
-						onClick={handleGoHome}
-						className="flex-1 !text-gray-700 !border-gray-300 hover:!bg-gray-100"
-					>
+					<Button variant="outline" onClick={handleGoHome} className="flex-1">
 						Inicio
 					</Button>
 				</div>
