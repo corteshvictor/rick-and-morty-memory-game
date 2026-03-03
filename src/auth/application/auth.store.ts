@@ -16,7 +16,9 @@ interface AuthState {
 	error: string | null;
 	oauthProvider: OAuthProvider | null;
 	signingOut: boolean;
-	signUp: (credentials: Credentials) => Promise<void>;
+	signUp: (
+		credentials: Credentials,
+	) => Promise<{ needsEmailConfirmation: boolean }>;
 	signIn: (credentials: Credentials) => Promise<void>;
 	signInWithOAuth: (provider: OAuthProvider) => Promise<void>;
 	signOut: () => Promise<void>;
@@ -42,9 +44,18 @@ export const useAuthStore = create<AuthState>((set) => ({
 		if (result.error) {
 			set({ error: result.error });
 			notifyError({ message: result.error, title: "Error de registro" });
-		} else if (result.user) {
+			return { needsEmailConfirmation: false };
+		}
+
+		if (result.needsEmailConfirmation) {
+			return { needsEmailConfirmation: true };
+		}
+
+		if (result.user) {
 			set({ user: result.user, status: AUTH_STATUS.AUTHENTICATED });
 		}
+
+		return { needsEmailConfirmation: false };
 	},
 
 	signIn: async (credentials) => {

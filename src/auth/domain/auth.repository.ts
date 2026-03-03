@@ -7,6 +7,7 @@ import {
 export interface AuthResult {
 	user: AuthUser | null;
 	error: string | null;
+	needsEmailConfirmation?: boolean;
 }
 
 export interface AuthGateway {
