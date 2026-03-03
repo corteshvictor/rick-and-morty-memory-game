@@ -1,4 +1,4 @@
-import { type Card } from "./card.model";
+import { CARD_STATUS, type Card } from "./card.model";
 import { type Character } from "./character.repository";
 
 /**
@@ -35,7 +35,7 @@ export function generateBoard(characters: Character[]): Card[] {
 				imageUrl,
 				characterStatus,
 				species,
-				status: "faceDown" as const,
+				status: CARD_STATUS.FACE_DOWN,
 			},
 			{
 				id: `${pairId}-b`,
@@ -44,7 +44,7 @@ export function generateBoard(characters: Character[]): Card[] {
 				imageUrl,
 				characterStatus,
 				species,
-				status: "faceDown" as const,
+				status: CARD_STATUS.FACE_DOWN,
 			},
 		];
 	});

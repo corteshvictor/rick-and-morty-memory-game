@@ -1,12 +1,14 @@
 import { useCallback, useEffect, useRef } from "react";
 import { generateBoard } from "@/game/domain/board-generator";
+import { GAME_PHASE } from "@/game/domain/game.model";
 import { useCharactersQuery } from "@/game/infrastructure/character.queries";
 import { useGameStore } from "./game.store";
 
 const PAIR_COUNT = 6;
 
 export function useGame() {
-	const { phase, cards, stats, startGame, flipCard, reset } = useGameStore();
+	const { phase, cards, stats, startGame, endShuffle, flipCard, reset } =
+		useGameStore();
 	const {
 		data: characters,
 		isLoading,
@@ -34,6 +36,12 @@ export function useGame() {
 		}
 	}, [characters, start]);
 
+	const restart = useCallback(() => {
+		if (!characters) return;
+		const board = generateBoard(characters);
+		startGame(board);
+	}, [characters, startGame]);
+
 	const replay = useCallback(async () => {
 		reset();
 		hasStarted.current = false;
@@ -45,7 +53,10 @@ export function useGame() {
 	}, [reset, refetch, startGame]);
 
 	const isDisabled =
-		phase === "preview" || phase === "completed" || phase === "idle";
+		phase === GAME_PHASE.SHUFFLING ||
+		phase === GAME_PHASE.PREVIEW ||
+		phase === GAME_PHASE.COMPLETED ||
+		phase === GAME_PHASE.IDLE;
 
 	return {
 		phase,
@@ -56,6 +67,8 @@ export function useGame() {
 		errorUpdatedAt,
 		isDisabled,
 		flipCard,
+		endShuffle,
+		restart,
 		replay,
 		retry: refetch,
 	};
