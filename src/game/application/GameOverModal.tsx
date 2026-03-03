@@ -2,6 +2,7 @@ import { useNavigate } from "react-router";
 import { useAuthStore } from "@/auth";
 import { Button } from "@/shared/ui/Button";
 import { Modal } from "@/shared/ui/Modal";
+import { Spinner } from "@/shared/ui/Spinner";
 
 interface GameOverModalProps {
 	open: boolean;
@@ -16,6 +17,7 @@ export function GameOverModal({
 }: Readonly<GameOverModalProps>) {
 	const navigate = useNavigate();
 	const signOut = useAuthStore((s) => s.signOut);
+	const signingOut = useAuthStore((s) => s.signingOut);
 
 	const handleGoHome = async () => {
 		await signOut();
@@ -31,11 +33,16 @@ export function GameOverModal({
 					<span className="font-bold text-green-600">{turns}</span> turnos
 				</p>
 				<div className="flex gap-4 w-full">
-					<Button onClick={onReplay} className="flex-1">
+					<Button onClick={onReplay} disabled={signingOut} className="flex-1">
 						Repetir
 					</Button>
-					<Button variant="outline" onClick={handleGoHome} className="flex-1">
-						Inicio
+					<Button
+						variant="outline"
+						onClick={handleGoHome}
+						disabled={signingOut}
+						className="flex-1"
+					>
+						{signingOut ? <Spinner size="base" /> : "Inicio"}
 					</Button>
 				</div>
 			</div>

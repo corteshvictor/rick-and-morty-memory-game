@@ -2,10 +2,12 @@ import { type ReactNode } from "react";
 import gameBg from "@/assets/images/game-background.png";
 import logo from "@/assets/images/ricky_morty_logo.svg";
 import { useAuthStore } from "@/auth";
+import { Spinner } from "@/shared/ui/Spinner";
 
 export function GameLayout({ children }: Readonly<{ children: ReactNode }>) {
 	const user = useAuthStore((s) => s.user);
 	const signOut = useAuthStore((s) => s.signOut);
+	const signingOut = useAuthStore((s) => s.signingOut);
 
 	const displayName = user?.displayName ?? user?.email ?? "";
 	const initial = displayName.charAt(0).toUpperCase();
@@ -31,9 +33,10 @@ export function GameLayout({ children }: Readonly<{ children: ReactNode }>) {
 						<button
 							type="button"
 							onClick={signOut}
-							className="text-sm text-white/70 hover:text-white bg-white/10 hover:bg-red-500/80 rounded-full px-3 py-1.5 transition-colors cursor-pointer border border-white/10 hover:border-red-500/80"
+							disabled={signingOut}
+							className="text-sm text-white/70 hover:text-white bg-white/10 hover:bg-red-500/80 rounded-full px-3 py-1.5 transition-colors cursor-pointer border border-white/10 hover:border-red-500/80 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:bg-white/10 disabled:hover:text-white/70 disabled:hover:border-white/10"
 						>
-							Salir
+							{signingOut ? <Spinner size="sm" /> : "Salir"}
 						</button>
 					</div>
 
