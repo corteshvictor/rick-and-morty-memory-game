@@ -32,7 +32,7 @@ export function GamePage() {
 	if (isLoading) {
 		return (
 			<div className="flex flex-col items-center justify-center py-20 gap-4">
-				<Spinner />
+				<Spinner className="text-green-500" />
 				<p className="text-white/60">Cargando personajes...</p>
 			</div>
 		);

@@ -1,16 +1,19 @@
 import { type SubmitEvent, useState } from "react";
 import { Link, Navigate } from "react-router";
+import { AUTH_STATUS } from "@/auth/domain/auth.model";
 import { Button } from "@/shared/ui/Button";
 import { Input } from "@/shared/ui/Input";
+import { Spinner } from "@/shared/ui/Spinner";
 import { useAuthStore } from "./auth.store";
 
 export function SignUpPage() {
-	const { signUp, signInWithOAuth, status } = useAuthStore();
+	const { signUp, signInWithOAuth, status, oauthProvider } = useAuthStore();
 	const [email, setEmail] = useState("");
 	const [password, setPassword] = useState("");
 	const [loading, setLoading] = useState(false);
+	const busy = loading || oauthProvider !== null;
 
-	if (status === "authenticated") {
+	if (status === AUTH_STATUS.AUTHENTICATED) {
 		return <Navigate to="/game" replace />;
 	}
 
@@ -43,8 +46,8 @@ export function SignUpPage() {
 				minLength={6}
 			/>
 
-			<Button type="submit" disabled={loading}>
-				{loading ? "Creando cuenta..." : "Registrarse"}
+			<Button type="submit" disabled={busy}>
+				{loading ? <Spinner size="base" /> : "Registrarse"}
 			</Button>
 
 			<div className="flex items-center gap-3 my-2">
@@ -58,17 +61,19 @@ export function SignUpPage() {
 					type="button"
 					variant="oauth"
 					className="flex-1"
+					disabled={busy}
 					onClick={() => signInWithOAuth("google")}
 				>
-					Google
+					{oauthProvider === "google" ? <Spinner size="sm" /> : "Google"}
 				</Button>
 				<Button
 					type="button"
 					variant="oauth"
 					className="flex-1"
+					disabled={busy}
 					onClick={() => signInWithOAuth("github")}
 				>
-					GitHub
+					{oauthProvider === "github" ? <Spinner size="sm" /> : "GitHub"}
 				</Button>
 			</div>
 
