@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useRef } from "react";
 import { generateBoard } from "@/game/domain/board-generator";
+import { GAME_PHASE } from "@/game/domain/game.model";
 import { useCharactersQuery } from "@/game/infrastructure/character.queries";
 import { useGameStore } from "./game.store";
 
@@ -45,7 +46,10 @@ export function useGame() {
 	}, [reset, refetch, startGame]);
 
 	const isDisabled =
-		phase === "preview" || phase === "completed" || phase === "idle";
+		phase === GAME_PHASE.SHUFFLING ||
+		phase === GAME_PHASE.PREVIEW ||
+		phase === GAME_PHASE.COMPLETED ||
+		phase === GAME_PHASE.IDLE;
 
 	return {
 		phase,

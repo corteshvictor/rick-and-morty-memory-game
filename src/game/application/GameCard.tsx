@@ -1,5 +1,5 @@
 import cardBackImg from "@/assets/images/card-back.webp";
-import { type Card } from "@/game/domain/card.model";
+import { CARD_STATUS, type Card } from "@/game/domain/card.model";
 
 interface GameCardProps {
 	card: Card;
@@ -8,8 +8,8 @@ interface GameCardProps {
 }
 
 export function GameCard({ card, onClick, disabled }: Readonly<GameCardProps>) {
-	const isFaceUp = card.status === "faceUp";
-	const isMatched = card.status === "matched";
+	const isFaceUp = card.status === CARD_STATUS.FACE_UP;
+	const isMatched = card.status === CARD_STATUS.MATCHED;
 	const isRevealed = isFaceUp || isMatched;
 
 	if (isMatched) {

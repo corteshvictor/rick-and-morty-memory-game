@@ -1,4 +1,5 @@
 import { useEffect } from "react";
+import { GAME_PHASE } from "@/game/domain/game.model";
 import { Button } from "@/shared/ui/Button";
 import { notifyError } from "@/shared/ui/notifications";
 import { Spinner } from "@/shared/ui/Spinner";
@@ -51,7 +52,7 @@ export function GamePage() {
 			<GameHeader matches={stats.matches} turns={stats.turns} />
 			<GameBoard cards={cards} onFlip={flipCard} disabled={isDisabled} />
 			<GameOverModal
-				open={phase === "completed"}
+				open={phase === GAME_PHASE.COMPLETED}
 				turns={stats.turns}
 				onReplay={replay}
 			/>

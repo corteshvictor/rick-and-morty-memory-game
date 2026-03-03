@@ -1,7 +1,7 @@
 import { create } from "zustand";
 import { type Card } from "@/game/domain/card.model";
 import { doCardsMatch } from "@/game/domain/card-matching";
-import { type GameState } from "@/game/domain/game.model";
+import { GAME_ACTION, type GameState } from "@/game/domain/game.model";
 import { createInitialState, transition } from "@/game/domain/game-engine";
 
 interface GameStore extends GameState {
@@ -17,18 +17,18 @@ export const useGameStore = create<GameStore>((set, get) => ({
 	...createInitialState(),
 
 	startGame: (cards) => {
-		const next = transition(get(), { type: "START_GAME", cards });
+		const next = transition(get(), { type: GAME_ACTION.START_GAME, cards });
 		set(next);
 
 		setTimeout(() => {
-			const afterPreview = transition(get(), { type: "END_PREVIEW" });
+			const afterPreview = transition(get(), { type: GAME_ACTION.END_SHUFFLE });
 			set(afterPreview);
 		}, PREVIEW_DURATION);
 	},
 
 	flipCard: (cardId) => {
 		const state = get();
-		const next = transition(state, { type: "FLIP_CARD", cardId });
+		const next = transition(state, { type: GAME_ACTION.FLIP_CARD, cardId });
 		if (next === state) return;
 		set(next);
 
@@ -42,8 +42,8 @@ export const useGameStore = create<GameStore>((set, get) => ({
 
 				setTimeout(() => {
 					const action = isMatch
-						? ({ type: "MATCH_FOUND" } as const)
-						: ({ type: "MATCH_FAILED" } as const);
+						? ({ type: GAME_ACTION.MATCH_FOUND } as const)
+						: ({ type: GAME_ACTION.MATCH_FAILED } as const);
 					const result = transition(get(), action);
 					set(result);
 				}, COMPARISON_DURATION);
