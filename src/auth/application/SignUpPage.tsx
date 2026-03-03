@@ -5,23 +5,42 @@ import { Button } from "@/shared/ui/Button";
 import { Input } from "@/shared/ui/Input";
 import { Spinner } from "@/shared/ui/Spinner";
 import { useAuthStore } from "./auth.store";
+import { EmailConfirmationScreen } from "./EmailConfirmationScreen";
 
 export function SignUpPage() {
 	const { signUp, signInWithOAuth, status, oauthProvider } = useAuthStore();
 	const [email, setEmail] = useState("");
 	const [password, setPassword] = useState("");
+	const [confirmPassword, setConfirmPassword] = useState("");
+	const [confirmError, setConfirmError] = useState("");
 	const [loading, setLoading] = useState(false);
+	const [showConfirmation, setShowConfirmation] = useState(false);
 	const busy = loading || oauthProvider !== null;
 
 	if (status === AUTH_STATUS.AUTHENTICATED) {
 		return <Navigate to="/game" replace />;
 	}
 
+	if (showConfirmation) {
+		return <EmailConfirmationScreen email={email} />;
+	}
+
 	const handleSubmit = async (e: SubmitEvent<HTMLFormElement>) => {
 		e.preventDefault();
+		setConfirmError("");
+
+		if (password !== confirmPassword) {
+			setConfirmError("Las contraseñas no coinciden");
+			return;
+		}
+
 		setLoading(true);
-		await signUp({ email, password });
+		const result = await signUp({ email, password });
 		setLoading(false);
+
+		if (result.needsEmailConfirmation) {
+			setShowConfirmation(true);
+		}
 	};
 
 	return (
@@ -44,6 +63,20 @@ export function SignUpPage() {
 				onChange={(e) => setPassword(e.target.value)}
 				required
 				minLength={6}
+			/>
+			<Input
+				id="confirmPassword"
+				label="Confirmar contraseña"
+				type="password"
+				placeholder="Repite tu contraseña"
+				value={confirmPassword}
+				onChange={(e) => {
+					setConfirmPassword(e.target.value);
+					if (confirmError) setConfirmError("");
+				}}
+				required
+				minLength={6}
+				error={confirmError}
 			/>
 
 			<Button type="submit" disabled={busy}>

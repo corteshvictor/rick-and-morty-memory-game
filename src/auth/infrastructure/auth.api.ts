@@ -28,7 +28,24 @@ export function createSupabaseAuthGateway(): AuthGateway {
 				password: credentials.password,
 			});
 			if (error) return { user: null, error: error.message };
-			return { user: mapUser(data.user), error: null };
+
+			const alreadyRegistered = data.user?.identities?.length === 0;
+
+			if (alreadyRegistered) {
+				return {
+					user: null,
+					error:
+						"Este correo electrónico ya está registrado. Intenta iniciar sesión.",
+				};
+			}
+
+			const needsEmailConfirmation = data.user != null && data.session == null;
+
+			return {
+				user: needsEmailConfirmation ? null : mapUser(data.user),
+				error: null,
+				needsEmailConfirmation,
+			};
 		},
 
 		async signIn(credentials: Credentials): Promise<AuthResult> {
