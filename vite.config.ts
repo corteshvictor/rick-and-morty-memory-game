@@ -61,6 +61,13 @@ export default defineConfig({
 						],
 					},
 					setupFiles: [".storybook/vitest.setup.ts"],
+					deps: {
+						optimizer: {
+							web: {
+								include: ["react-router"],
+							},
+						},
+					},
 				},
 			},
 		],
