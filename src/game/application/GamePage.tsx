@@ -18,6 +18,8 @@ export function GamePage() {
 		errorUpdatedAt,
 		isDisabled,
 		flipCard,
+		endShuffle,
+		restart,
 		replay,
 		retry,
 	} = useGame();
@@ -49,8 +51,19 @@ export function GamePage() {
 
 	return (
 		<div className="bg-amber-50 rounded-2xl p-6 shadow-lg">
-			<GameHeader matches={stats.matches} turns={stats.turns} />
-			<GameBoard cards={cards} onFlip={flipCard} disabled={isDisabled} />
+			<GameHeader
+				matches={stats.matches}
+				turns={stats.turns}
+				onRestart={restart}
+				canRestart={phase === GAME_PHASE.PLAYING}
+			/>
+			<GameBoard
+				cards={cards}
+				phase={phase}
+				onFlip={flipCard}
+				onShuffleComplete={endShuffle}
+				disabled={isDisabled}
+			/>
 			<GameOverModal
 				open={phase === GAME_PHASE.COMPLETED}
 				turns={stats.turns}

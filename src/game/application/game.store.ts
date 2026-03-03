@@ -1,11 +1,16 @@
 import { create } from "zustand";
 import { type Card } from "@/game/domain/card.model";
 import { doCardsMatch } from "@/game/domain/card-matching";
-import { GAME_ACTION, type GameState } from "@/game/domain/game.model";
+import {
+	GAME_ACTION,
+	GAME_PHASE,
+	type GameState,
+} from "@/game/domain/game.model";
 import { createInitialState, transition } from "@/game/domain/game-engine";
 
 interface GameStore extends GameState {
 	startGame: (cards: Card[]) => void;
+	endShuffle: () => void;
 	flipCard: (cardId: string) => void;
 	reset: () => void;
 }
@@ -13,15 +18,36 @@ interface GameStore extends GameState {
 const PREVIEW_DURATION = 3000;
 const COMPARISON_DURATION = 1000;
 
+let previewTimerId: ReturnType<typeof setTimeout> | null = null;
+
+function clearPreviewTimer() {
+	if (previewTimerId) {
+		clearTimeout(previewTimerId);
+		previewTimerId = null;
+	}
+}
+
 export const useGameStore = create<GameStore>((set, get) => ({
 	...createInitialState(),
 
 	startGame: (cards) => {
-		const next = transition(get(), { type: GAME_ACTION.START_GAME, cards });
+		clearPreviewTimer();
+		const current = get();
+		const base =
+			current.phase === GAME_PHASE.IDLE
+				? current
+				: transition(current, { type: GAME_ACTION.RESET });
+		const next = transition(base, { type: GAME_ACTION.START_GAME, cards });
+		set(next);
+	},
+
+	endShuffle: () => {
+		const next = transition(get(), { type: GAME_ACTION.END_SHUFFLE });
 		set(next);
 
-		setTimeout(() => {
-			const afterPreview = transition(get(), { type: GAME_ACTION.END_SHUFFLE });
+		previewTimerId = setTimeout(() => {
+			previewTimerId = null;
+			const afterPreview = transition(get(), { type: GAME_ACTION.END_PREVIEW });
 			set(afterPreview);
 		}, PREVIEW_DURATION);
 	},
@@ -52,6 +78,7 @@ export const useGameStore = create<GameStore>((set, get) => ({
 	},
 
 	reset: () => {
+		clearPreviewTimer();
 		set(createInitialState());
 	},
 }));
