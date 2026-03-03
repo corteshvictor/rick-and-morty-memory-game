@@ -1,13 +1,11 @@
 import { type User } from "@supabase/supabase-js";
+import { type AuthGateway } from "@/auth/domain/auth.gateway";
 import {
+	type AuthResult,
 	type AuthUser,
 	type Credentials,
 	type OAuthProvider,
 } from "@/auth/domain/auth.model";
-import {
-	type AuthGateway,
-	type AuthResult,
-} from "@/auth/domain/auth.repository";
 import { supabase } from "@/shared/infrastructure/supabase";
 
 function mapUser(user: User | null): AuthUser | null {

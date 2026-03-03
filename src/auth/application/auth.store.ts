@@ -1,4 +1,5 @@
 import { create } from "zustand";
+import { type AuthGateway } from "@/auth/domain/auth.gateway";
 import {
 	AUTH_STATUS,
 	type AuthStatus,
@@ -6,7 +7,6 @@ import {
 	type Credentials,
 	type OAuthProvider,
 } from "@/auth/domain/auth.model";
-import { type AuthGateway } from "@/auth/domain/auth.repository";
 import { createSupabaseAuthGateway } from "@/auth/infrastructure/auth.api";
 import { notifyError } from "@/shared/ui/notifications";
 

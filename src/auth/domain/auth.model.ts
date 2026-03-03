@@ -11,6 +11,12 @@ export interface Credentials {
 
 export type OAuthProvider = "google" | "github";
 
+export interface AuthResult {
+	user: AuthUser | null;
+	error: string | null;
+	needsEmailConfirmation?: boolean;
+}
+
 export const AUTH_STATUS = {
 	LOADING: "loading",
 	AUTHENTICATED: "authenticated",
