@@ -17,6 +17,9 @@ importers:
       '@tanstack/react-query':
         specifier: 5.90.21
         version: 5.90.21(react@19.2.4)
+      canvas-confetti:
+        specifier: 1.9.4
+        version: 1.9.4
       react:
         specifier: 19.2.4
         version: 19.2.4
@@ -48,6 +51,9 @@ importers:
       '@commitlint/config-conventional':
         specifier: 20.4.2
         version: 20.4.2
+      '@types/canvas-confetti':
+        specifier: 1.9.0
+        version: 1.9.0
       '@types/node':
         specifier: 24.11.0
         version: 24.11.0
@@ -727,6 +733,9 @@ packages:
     peerDependencies:
       react: ^18 || ^19
 
+  '@types/canvas-confetti@1.9.0':
+    resolution: {integrity: sha512-aBGj/dULrimR1XDZLtG9JwxX1b4HPRF6CX9Yfwh3NvstZEm1ZL7RBnel4keCPSqs1ANRu1u2Aoz9R+VmtjYuTg==}
+
   '@types/estree@1.0.8':
     resolution: {integrity: sha512-dWHzHa2WqEXI/O1E9OjrocMTKJl2mSrEolh1Iomrv6U+JuNwaHXsXx9bLu5gG7BUWFIN0skIQJQ/L1rIex4X6w==}
 
@@ -789,6 +798,9 @@ packages:
   callsites@3.1.0:
     resolution: {integrity: sha512-P8BjAsXvZS+VIDUI11hHCQEv74YT67YUi5JJFNWIqL235sBmjX4+qx9Muvls5ivyNENctx46xQLQ3aTuE7ssaQ==}
     engines: {node: '>=6'}
+
+  canvas-confetti@1.9.4:
+    resolution: {integrity: sha512-yxQbJkAVrFXWNbTUjPqjF7G+g6pDotOUHGbkZq2NELZUMDpiJ85rIEazVb8GTaAptNW2miJAXbs1BtioA251Pw==}
 
   cli-cursor@5.0.0:
     resolution: {integrity: sha512-aCj4O5wKyszjMmDT4tZj93kxyydN/K5zPWSCe6/0AV/AA1pqe5ZBIw0a2ZfPQV7lL5/yb5HsUreJ6UFAF1tEQw==}
@@ -1935,6 +1947,8 @@ snapshots:
       '@tanstack/query-core': 5.90.20
       react: 19.2.4
 
+  '@types/canvas-confetti@1.9.0': {}
+
   '@types/estree@1.0.8': {}
 
   '@types/node@24.11.0':
@@ -1993,6 +2007,8 @@ snapshots:
       fill-range: 7.1.1
 
   callsites@3.1.0: {}
+
+  canvas-confetti@1.9.4: {}
 
   cli-cursor@5.0.0:
     dependencies:

@@ -1,3 +1,5 @@
+import confetti from "canvas-confetti";
+import { useEffect } from "react";
 import { useNavigate } from "react-router";
 import { useAuthStore } from "@/auth";
 import { Button } from "@/shared/ui/Button";
@@ -18,6 +20,12 @@ export function GameOverModal({
 	const navigate = useNavigate();
 	const signOut = useAuthStore((s) => s.signOut);
 	const signingOut = useAuthStore((s) => s.signingOut);
+
+	useEffect(() => {
+		if (open) {
+			confetti({ particleCount: 200, spread: 100, origin: { y: 0.6 } });
+		}
+	}, [open]);
 
 	const handleGoHome = async () => {
 		await signOut();
