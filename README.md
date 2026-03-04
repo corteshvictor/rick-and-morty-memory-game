@@ -10,7 +10,9 @@ Juego de memoria construido con React y TypeScript donde el jugador debe encontr
 - **Fin del juego:** al encontrar todos los pares se muestra el total de turnos con animación de confeti y opciones para repetir o cerrar sesión.
 
 ## Demo
-![rick-and-morty](https://github.com/user-attachments/assets/d04cf086-c91a-4fe4-a970-702be40a6a2f)
+<p align="center">
+  <img src="https://github.com/user-attachments/assets/d04cf086-c91a-4fe4-a970-702be40a6a2f" alt="rick-and-morty" />
+</p>
 
 ## Enfoque de desarrollo
 
