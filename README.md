@@ -9,6 +9,9 @@ Juego de memoria construido con React y TypeScript donde el jugador debe encontr
 - **Desarrollo del juego:** el jugador selecciona dos cartas por turno. Si coinciden quedan visibles y aumenta el contador de aciertos; si no coinciden se voltean de nuevo. Cada par de selecciones incrementa el contador de turnos.
 - **Fin del juego:** al encontrar todos los pares se muestra el total de turnos con animación de confeti y opciones para repetir o cerrar sesión.
 
+## Demo
+![rick-and-morty](https://github.com/user-attachments/assets/d04cf086-c91a-4fe4-a970-702be40a6a2f)
+
 ## Enfoque de desarrollo
 
 ### Arquitectura: Hexagonal + Vertical Slicing + Screaming Architecture
