@@ -18,15 +18,41 @@ VITE_SUPABASE_PUBLISHABLE_DEFAULT_KEY=
 ## Commands
 
 ```bash
-pnpm dev        # Start dev server
-pnpm build      # TypeScript check + Vite production build
-pnpm lint       # Biome linter check
-pnpm lint:fix   # Auto-fix lint issues
-pnpm format     # Format with Biome
-pnpm preview    # Preview production build
+pnpm dev            # Start dev server
+pnpm build          # TypeScript check + Vite production build
+pnpm lint           # Biome linter check
+pnpm lint:fix       # Auto-fix lint issues
+pnpm format         # Format with Biome
+pnpm preview        # Preview production build
+pnpm storybook      # Start Storybook dev server on port 6006
+pnpm build-storybook # Build static Storybook site
 ```
 
-No test framework is configured yet.
+### Testing
+
+```bash
+pnpm test                          # Run Vitest in watch mode (unit + storybook projects)
+pnpm test:ci                       # Run all tests once (CI mode)
+pnpm test:coverage                 # Run with V8 coverage
+pnpm vitest --project unit         # Run only unit tests
+pnpm vitest --project storybook    # Run only Storybook interaction tests
+pnpm vitest run src/auth           # Run tests in a specific directory
+pnpm e2e                           # Run Playwright E2E tests (auto-starts dev server)
+pnpm e2e:ui                        # Run E2E with Playwright UI
+pnpm e2e:report                    # Show last E2E HTML report
+```
+
+## Storybook
+
+Component documentation and visual development environment. Stories live alongside components (`*.stories.tsx`). Includes `@storybook/addon-a11y` for accessibility auditing and `@storybook/addon-docs` for auto-generated docs. Stories also double as interaction tests via the `@storybook/addon-vitest` integration (see Testing Stack below).
+
+## Testing Stack
+
+- **Unit/Integration**: Vitest + Testing Library + happy-dom. Tests live alongside source files (`*.test.tsx`).
+- **API mocking**: MSW (Mock Service Worker). Handlers in `src/mocks/handlers/`, server setup in `src/mocks/node.ts`, auto-started via `src/test-setup.ts`.
+- **Storybook interaction tests**: Stories (`*.stories.tsx`) run as Vitest browser tests via `@storybook/addon-vitest` + Playwright (headless Chromium).
+- **E2E**: Playwright. Tests in `e2e/` directory, config in `playwright.config.ts`. Runs against Chromium, Firefox, and WebKit.
+- **Vitest projects** (configured in `vite.config.ts`): `unit` (happy-dom) and `storybook` (browser/Playwright).
 
 ## Architecture
 

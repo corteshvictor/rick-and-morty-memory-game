@@ -29,8 +29,8 @@ export function GameHeader({
 						src={restartIcon}
 						alt="Reiniciar el juego"
 						className="w-3.5 h-3.5 transition-transform group-hover:-rotate-180 duration-500"
-					/>{" "}
-					Reiniciar
+					/>
+					<span>Reiniciar</span>
 				</button>
 			)}
 
