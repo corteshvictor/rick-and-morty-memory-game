@@ -5,6 +5,7 @@ import { useAuthStore } from "@/auth";
 import { Button } from "@/shared/ui/Button";
 import { Modal } from "@/shared/ui/Modal";
 import { Spinner } from "@/shared/ui/Spinner";
+import { useGameStore } from "./game.store";
 
 interface GameOverModalProps {
 	open: boolean;
@@ -20,6 +21,7 @@ export function GameOverModal({
 	const navigate = useNavigate();
 	const signOut = useAuthStore((s) => s.signOut);
 	const signingOut = useAuthStore((s) => s.signingOut);
+	const resetGame = useGameStore((s) => s.reset);
 
 	useEffect(() => {
 		if (open) {
@@ -28,6 +30,7 @@ export function GameOverModal({
 	}, [open]);
 
 	const handleGoHome = async () => {
+		resetGame();
 		await signOut();
 		navigate("/login");
 	};
