@@ -15,7 +15,10 @@
 		"build-storybook": "storybook build",
 		"test": "vitest",
 		"test:coverage": "vitest run --coverage",
-		"test:ci": "vitest run --pool=threads --reporter=verbose"
+		"test:ci": "vitest run --pool=threads --reporter=verbose",
+		"e2e": "pnpm playwright test",
+		"e2e:ui": "pnpm playwright test --ui",
+		"e2e:report": "pnpm playwright show-report"
 	},
 	"author": "Victor Cortés",
 	"description": "React application that allows a user to authenticate and play a memory game with characters from Rick and Morty",
@@ -37,6 +40,7 @@
 		"@chromatic-com/storybook": "5.0.1",
 		"@commitlint/cli": "20.4.2",
 		"@commitlint/config-conventional": "20.4.2",
+		"@playwright/test": "1.58.2",
 		"@storybook/addon-a11y": "10.2.14",
 		"@storybook/addon-docs": "10.2.14",
 		"@storybook/addon-onboarding": "10.2.14",
