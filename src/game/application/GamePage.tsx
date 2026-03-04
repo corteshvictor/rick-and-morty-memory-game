@@ -50,7 +50,7 @@ export function GamePage() {
 	}
 
 	return (
-		<div className="bg-amber-50 rounded-2xl p-6 shadow-lg">
+		<div className="bg-amber-50 rounded-2xl p-3 sm:p-6 shadow-lg">
 			<GameHeader
 				matches={stats.matches}
 				turns={stats.turns}

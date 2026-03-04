@@ -32,7 +32,7 @@ export function GameBoard({
 	);
 
 	return (
-		<div ref={gridRef} className="grid grid-cols-4 gap-4 w-full">
+		<div ref={gridRef} className="grid grid-cols-4 gap-2 sm:gap-4 w-full">
 			{displayCards.map((card) => {
 				const transform = swapTransforms[card.id];
 				const isSwapping = !!transform;
