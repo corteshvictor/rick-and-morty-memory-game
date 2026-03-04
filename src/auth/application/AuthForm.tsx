@@ -105,7 +105,7 @@ export function AuthForm({
 			</div>
 
 			<p className="text-white/50 text-sm text-center mt-2">
-				{footerLink.text}
+				{footerLink.text}{" "}
 				<Link to={footerLink.to} className="text-green-400 hover:underline">
 					{footerLink.linkText}
 				</Link>
