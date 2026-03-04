@@ -37,7 +37,7 @@ export function GameCard({ card, onClick, disabled }: Readonly<GameCardProps>) {
 				</div>
 
 				{/* Card front */}
-				<div className="absolute inset-0 backface-hidden rotate-y-180 rounded-lg overflow-hidden bg-white shadow-[0_4px_6px_-2px_rgba(0,0,0,0.20)] flex flex-col p-4 gap-2 text-left">
+				<div className="absolute inset-0 backface-hidden rotate-y-180 rounded-lg overflow-hidden bg-white shadow-[0_4px_6px_-2px_rgba(0,0,0,0.20)] flex flex-col p-1.5 sm:p-4 gap-1 sm:gap-2 text-left">
 					<div className="flex-1 rounded overflow-hidden">
 						<img
 							src={card.imageUrl}
@@ -46,10 +46,10 @@ export function GameCard({ card, onClick, disabled }: Readonly<GameCardProps>) {
 						/>
 					</div>
 					<div>
-						<p className="text-[#233A59] text-base font-bold leading-5.5 truncate">
+						<p className="text-[#233A59] text-xs sm:text-base font-bold leading-tight sm:leading-5.5 truncate">
 							{card.name}
 						</p>
-						<p className="text-black text-[10px] leading-none truncate">
+						<p className="text-black text-[0.625rem] leading-none truncate hidden sm:block">
 							{card.characterStatus} - {card.species}
 						</p>
 					</div>

@@ -14,7 +14,7 @@ export function GameHeader({
 	canRestart,
 }: Readonly<GameHeaderProps>) {
 	return (
-		<div className="flex justify-between items-center px-2 pb-4">
+		<div className="flex justify-between items-center px-2 pb-4 min-h-12">
 			<p className="text-sm text-gray-700">
 				Aciertos: <span className="font-bold text-green-600">{matches}</span>
 			</p>
@@ -23,12 +23,12 @@ export function GameHeader({
 				<button
 					type="button"
 					onClick={onRestart}
-					className="group flex items-center gap-1.5 text-sm font-semibold text-[#233A59] bg-cyan-200/60 hover:bg-cyan-300/70 border border-cyan-300/80 rounded-full px-3 py-1.5 transition-all cursor-pointer hover:scale-105 active:scale-95"
+					className="group flex items-center gap-1.5 text-sm font-semibold text-[#233A59] bg-cyan-200/60 hover:bg-cyan-300/70 border border-cyan-300/80 rounded-full px-3 py-1 sm:py-1.5 transition-all cursor-pointer hover:scale-105 active:scale-95"
 				>
 					<img
 						src={restartIcon}
 						alt="Reiniciar el juego"
-						className="w-3.5 h-3.5 transition-transform group-hover:-rotate-180 duration-500"
+						className="size-3.5 transition-transform group-hover:-rotate-180 duration-500"
 					/>
 					<span>Reiniciar</span>
 				</button>

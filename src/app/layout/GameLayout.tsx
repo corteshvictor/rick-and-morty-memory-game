@@ -42,7 +42,7 @@ export function GameLayout({ children }: Readonly<{ children: ReactNode }>) {
 
 					{/* Logo + title centered */}
 					<div className="flex flex-col items-center gap-2 pt-2 pb-6">
-						<img src={logo} alt="Rick and Morty" className="h-24" />
+						<img src={logo} alt="Rick and Morty" className="h-20 sm:h-24" />
 						<span className="text-sm text-gray-900 font-medium bg-[#D8E054] rounded-[25px] px-4 py-2">
 							Juego de memoria
 						</span>
