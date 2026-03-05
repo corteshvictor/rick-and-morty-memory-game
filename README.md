@@ -1,3 +1,5 @@
+[![Ask DeepWiki](https://deepwiki.com/badge.svg)](https://deepwiki.com/corteshvictor/rick-and-morty-memory-game)
+
 # Rick and Morty Memory Game
 
 Juego de memoria construido con React y TypeScript donde el jugador debe encontrar pares de cartas con personajes de Rick and Morty. La aplicación incluye autenticación con manejo de tokens y consume la [Rick and Morty API](https://rickandmortyapi.com/) para obtener los personajes.
