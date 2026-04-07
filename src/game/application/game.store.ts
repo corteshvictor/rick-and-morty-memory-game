@@ -7,12 +7,15 @@ import {
 	type GameState,
 } from "@/game/domain/game.model";
 import { createInitialState, transition } from "@/game/domain/game-engine";
+import { type GameMode, PLAYER_ID } from "../domain/multiplayer.model";
 
 interface GameStore extends GameState {
 	startGame: (cards: Card[]) => void;
 	endShuffle: () => void;
 	flipCard: (cardId: string) => void;
 	reset: () => void;
+	setMode: (mode: GameMode) => void;
+	setupVersus: (name1: string, name2: string) => void;
 }
 
 const PREVIEW_DURATION = 3000;
@@ -33,10 +36,24 @@ export const useGameStore = create<GameStore>((set, get) => ({
 	startGame: (cards) => {
 		clearPreviewTimer();
 		const current = get();
-		const base =
-			current.phase === GAME_PHASE.IDLE
-				? current
-				: transition(current, { type: GAME_ACTION.RESET });
+		let base: GameState = current;
+		if (current.phase !== GAME_PHASE.IDLE) {
+			// Reset to IDLE preserving mode and player names (matches reset to 0)
+			const initial = createInitialState();
+			base = {
+				...initial,
+				mode: current.mode,
+				versus: current.versus
+					? {
+							players: [
+								{ ...current.versus.players[0], matches: 0 },
+								{ ...current.versus.players[1], matches: 0 },
+							],
+							activePlayerId: PLAYER_ID.ONE,
+						}
+					: null,
+			};
+		}
 		const next = transition(base, { type: GAME_ACTION.START_GAME, cards });
 		set(next);
 	},
@@ -80,5 +97,17 @@ export const useGameStore = create<GameStore>((set, get) => ({
 	reset: () => {
 		clearPreviewTimer();
 		set(createInitialState());
+	},
+	setMode: (mode) => {
+		const next = transition(get(), { type: GAME_ACTION.SET_MODE, mode });
+		set(next);
+	},
+	setupVersus: (name1, name2) => {
+		const next = transition(get(), {
+			type: GAME_ACTION.SETUP_VERSUS,
+			name1,
+			name2,
+		});
+		set(next);
 	},
 }));
