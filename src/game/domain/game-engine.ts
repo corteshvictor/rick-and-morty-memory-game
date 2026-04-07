@@ -5,6 +5,16 @@ import {
 	type GameAction,
 	type GameState,
 } from "./game.model";
+import {
+	DEFAULT_GAME_MODE,
+	GAME_MODE,
+	type GameMode,
+} from "./multiplayer.model";
+import {
+	addMatchToPlayer,
+	createVersusState,
+	getOpponent,
+} from "./turn-manager";
 
 export function createInitialState(): GameState {
 	return {
@@ -12,12 +22,37 @@ export function createInitialState(): GameState {
 		cards: [],
 		flippedCardIds: [],
 		stats: { turns: 0, matches: 0, totalPairs: 0 },
+		mode: DEFAULT_GAME_MODE,
+		versus: null,
+	};
+}
+
+function handleSetMode(state: GameState, mode: GameMode): GameState {
+	if (state.phase !== GAME_PHASE.IDLE) return state;
+	return {
+		...state,
+		mode,
+		versus: null,
+	};
+}
+
+function handleSetupVersus(
+	state: GameState,
+	name1: string,
+	name2: string,
+): GameState {
+	if (state.phase !== GAME_PHASE.IDLE) return state;
+	return {
+		...state,
+		mode: GAME_MODE.VERSUS,
+		versus: createVersusState(name1, name2),
 	};
 }
 
 function handleStartGame(state: GameState, cards: Card[]): GameState {
 	if (state.phase !== GAME_PHASE.IDLE) return state;
 	return {
+		...state,
 		phase: GAME_PHASE.SHUFFLING,
 		cards,
 		flippedCardIds: [],
@@ -85,18 +120,39 @@ function handleMatchFound(state: GameState): GameState {
 	);
 	const isComplete = updatedMatches === state.stats.totalPairs;
 
+	const updatedVersus =
+		state.mode === GAME_MODE.VERSUS && state.versus
+			? {
+					...state.versus,
+					players: addMatchToPlayer(
+						state.versus.players,
+						state.versus.activePlayerId,
+					),
+					// El jugador que hizo match SIGUE JUGANDO (no cambia activePlayerId)
+				}
+			: state.versus;
+
 	return {
 		...state,
 		phase: isComplete ? GAME_PHASE.COMPLETED : GAME_PHASE.PLAYING,
 		cards: updatedCards,
 		flippedCardIds: [],
 		stats: { ...state.stats, matches: updatedMatches },
+		versus: updatedVersus,
 	};
 }
 
 function handleMatchFailed(state: GameState): GameState {
 	if (state.phase !== GAME_PHASE.PLAYING) return state;
 	if (state.flippedCardIds.length !== 2) return state;
+
+	const updatedVersus =
+		state.mode === GAME_MODE.VERSUS && state.versus
+			? {
+					...state.versus,
+					activePlayerId: getOpponent(state.versus.activePlayerId),
+				}
+			: state.versus;
 
 	return {
 		...state,
@@ -106,6 +162,7 @@ function handleMatchFailed(state: GameState): GameState {
 				: card,
 		),
 		flippedCardIds: [],
+		versus: updatedVersus,
 	};
 }
 
@@ -125,6 +182,10 @@ export function transition(state: GameState, action: GameAction): GameState {
 			return handleMatchFailed(state);
 		case GAME_ACTION.RESET:
 			return createInitialState();
+		case GAME_ACTION.SET_MODE:
+			return handleSetMode(state, action.mode);
+		case GAME_ACTION.SETUP_VERSUS:
+			return handleSetupVersus(state, action.name1, action.name2);
 		default:
 			return state;
 	}

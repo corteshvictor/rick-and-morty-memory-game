@@ -1,14 +1,27 @@
-import { useCallback, useEffect, useRef } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { generateBoard } from "@/game/domain/board-generator";
 import { GAME_PHASE } from "@/game/domain/game.model";
+import { GAME_MODE } from "@/game/domain/multiplayer.model";
+import { getWinner } from "@/game/domain/turn-manager";
 import { useCharactersQuery } from "@/game/infrastructure/character.queries";
 import { useGameStore } from "./game.store";
 
 const PAIR_COUNT = 6;
 
 export function useGame() {
-	const { phase, cards, stats, startGame, endShuffle, flipCard, reset } =
-		useGameStore();
+	const {
+		phase,
+		cards,
+		stats,
+		mode,
+		versus,
+		startGame,
+		endShuffle,
+		flipCard,
+		reset,
+		setMode,
+		setupVersus,
+	} = useGameStore();
 	const {
 		data: characters,
 		isLoading,
@@ -17,6 +30,7 @@ export function useGame() {
 		refetch,
 	} = useCharactersQuery(PAIR_COUNT);
 	const hasStarted = useRef(false);
+	const [showModeSelector, setShowModeSelector] = useState(true);
 
 	useEffect(() => {
 		reset();
@@ -30,11 +44,11 @@ export function useGame() {
 	}, [characters, startGame]);
 
 	useEffect(() => {
-		if (characters && !hasStarted.current) {
+		if (characters && !hasStarted.current && !showModeSelector) {
 			hasStarted.current = true;
 			start();
 		}
-	}, [characters, start]);
+	}, [characters, start, showModeSelector]);
 
 	const restart = useCallback(() => {
 		if (!characters) return;
@@ -43,20 +57,42 @@ export function useGame() {
 	}, [characters, startGame]);
 
 	const replay = useCallback(async () => {
-		reset();
-		hasStarted.current = false;
 		const result = await refetch();
 		if (result.data) {
 			const board = generateBoard(result.data);
 			startGame(board);
 		}
-	}, [reset, refetch, startGame]);
+	}, [refetch, startGame]);
+
+	const selectSingleMode = useCallback(() => {
+		setMode(GAME_MODE.SINGLE);
+		setShowModeSelector(false);
+	}, [setMode]);
+
+	const selectVersusMode = useCallback(
+		(name1: string, name2: string) => {
+			setupVersus(name1, name2);
+			setShowModeSelector(false);
+		},
+		[setupVersus],
+	);
+
+	const changeMode = useCallback(() => {
+		reset();
+		hasStarted.current = false;
+		setShowModeSelector(true);
+	}, [reset]);
 
 	const isDisabled =
 		phase === GAME_PHASE.SHUFFLING ||
 		phase === GAME_PHASE.PREVIEW ||
 		phase === GAME_PHASE.COMPLETED ||
 		phase === GAME_PHASE.IDLE;
+
+	const winner =
+		phase === GAME_PHASE.COMPLETED && mode === GAME_MODE.VERSUS && versus
+			? getWinner(versus.players)
+			: undefined; // undefined = no aplica (single o no completado)
 
 	return {
 		phase,
@@ -71,5 +107,12 @@ export function useGame() {
 		restart,
 		replay,
 		retry: refetch,
+		mode,
+		versus,
+		winner,
+		showModeSelector,
+		selectSingleMode,
+		selectVersusMode,
+		changeMode,
 	};
 }

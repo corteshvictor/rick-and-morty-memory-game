@@ -6,6 +6,7 @@ import { Spinner } from "@/shared/ui/Spinner";
 import { GameBoard } from "./GameBoard";
 import { GameHeader } from "./GameHeader";
 import { GameOverModal } from "./GameOverModal";
+import { ModeSelector } from "./ModeSelector";
 import { useGame } from "./useGame";
 
 export function GamePage() {
@@ -22,12 +23,30 @@ export function GamePage() {
 		restart,
 		replay,
 		retry,
+		mode,
+		versus,
+		winner,
+		showModeSelector,
+		selectSingleMode,
+		selectVersusMode,
+		changeMode,
 	} = useGame();
 
 	useEffect(() => {
 		if (!error || errorUpdatedAt <= 0) return;
 		notifyError({ message: error, title: "Error del juego" });
 	}, [error, errorUpdatedAt]);
+
+	if (showModeSelector) {
+		return (
+			<div className="bg-amber-50 rounded-2xl p-3 sm:p-6 shadow-lg">
+				<ModeSelector
+					onSelectSingle={selectSingleMode}
+					onSelectVersus={selectVersusMode}
+				/>
+			</div>
+		);
+	}
 
 	if (isLoading) {
 		return (
@@ -56,6 +75,9 @@ export function GamePage() {
 				turns={stats.turns}
 				onRestart={restart}
 				canRestart={phase === GAME_PHASE.PLAYING}
+				mode={mode}
+				versusPlayers={versus?.players}
+				versusActivePlayerId={versus?.activePlayerId}
 			/>
 			<GameBoard
 				cards={cards}
@@ -68,6 +90,10 @@ export function GamePage() {
 				open={phase === GAME_PHASE.COMPLETED}
 				turns={stats.turns}
 				onReplay={replay}
+				mode={mode}
+				winner={winner}
+				versus={versus ?? undefined}
+				onChangeMode={changeMode}
 			/>
 		</div>
 	);

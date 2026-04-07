@@ -8,7 +8,7 @@
 				"BROWSER": "none"
 			},
 			"request": "launch",
-			"runtimeExecutable": "yarn",
+			"runtimeExecutable": "pnpm",
 			"type": "node"
 		},
 		{

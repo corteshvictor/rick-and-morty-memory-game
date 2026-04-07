@@ -1,6 +1,7 @@
 import { type Meta, type StoryObj } from "@storybook/react-vite";
 import { expect, fn, userEvent, within } from "storybook/test";
 import { GameHeader } from "./GameHeader";
+import { GAME_MODE } from "@/game/domain/multiplayer.model";
 
 const meta = {
 	title: "Game/GameHeader",
@@ -21,6 +22,7 @@ const meta = {
 		turns: 0,
 		onRestart: fn(),
 		canRestart: true,
+		mode: GAME_MODE.SINGLE,
 	},
 } satisfies Meta<typeof GameHeader>;
 
@@ -77,5 +79,29 @@ export const DisplaysStats: Story = {
 
 		await expect(canvas.getByText("4")).toBeVisible();
 		await expect(canvas.getByText("12")).toBeVisible();
+	},
+};
+
+export const VersusMode: Story = {
+	args: {
+		mode: GAME_MODE.VERSUS,
+		versusPlayers: [
+			{ id: 1, name: "Rick", matches: 3 },
+			{ id: 2, name: "Morty", matches: 2 },
+		],
+		versusActivePlayerId: 1,
+		turns: 10,
+	},
+};
+
+export const VersusModePlayer2Active: Story = {
+	args: {
+		mode: GAME_MODE.VERSUS,
+		versusPlayers: [
+			{ id: 1, name: "Rick", matches: 3 },
+			{ id: 2, name: "Morty", matches: 4 },
+		],
+		versusActivePlayerId: 2,
+		turns: 14,
 	},
 };

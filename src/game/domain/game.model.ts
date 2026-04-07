@@ -1,4 +1,5 @@
 import { type Card } from "./card.model";
+import { type GameMode, type VersusState } from "./multiplayer.model";
 
 export const GAME_PHASE = {
 	IDLE: "idle",
@@ -21,6 +22,8 @@ export interface GameState {
 	cards: Card[];
 	flippedCardIds: string[];
 	stats: GameStats;
+	mode: GameMode;
+	versus: VersusState | null;
 }
 
 export const GAME_ACTION = {
@@ -31,6 +34,8 @@ export const GAME_ACTION = {
 	MATCH_FOUND: "MATCH_FOUND",
 	MATCH_FAILED: "MATCH_FAILED",
 	RESET: "RESET",
+	SET_MODE: "SET_MODE",
+	SETUP_VERSUS: "SETUP_VERSUS",
 } as const;
 
 export type GameAction =
@@ -40,4 +45,6 @@ export type GameAction =
 	| { type: typeof GAME_ACTION.FLIP_CARD; cardId: string }
 	| { type: typeof GAME_ACTION.MATCH_FOUND }
 	| { type: typeof GAME_ACTION.MATCH_FAILED }
-	| { type: typeof GAME_ACTION.RESET };
+	| { type: typeof GAME_ACTION.RESET }
+	| { type: typeof GAME_ACTION.SET_MODE; mode: GameMode }
+	| { type: typeof GAME_ACTION.SETUP_VERSUS; name1: string; name2: string };
