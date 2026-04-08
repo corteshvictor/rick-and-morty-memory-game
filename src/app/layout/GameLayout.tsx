@@ -1,8 +1,8 @@
 import { type ReactNode } from "react";
-import gameBg from "@/assets/images/game-background.png";
 import logo from "@/assets/images/ricky_morty_logo.svg";
 import { useAuthStore } from "@/auth";
 import { Spinner } from "@/shared/ui/Spinner";
+import { StarfieldBackground } from "@/shared/ui/StarfieldBackground";
 
 export function GameLayout({ children }: Readonly<{ children: ReactNode }>) {
 	const user = useAuthStore((s) => s.user);
@@ -13,12 +13,8 @@ export function GameLayout({ children }: Readonly<{ children: ReactNode }>) {
 	const initial = displayName.charAt(0).toUpperCase();
 
 	return (
-		<div
-			className="relative min-h-screen bg-[#1a1a2e] bg-cover bg-center bg-no-repeat bg-fixed"
-			style={{ backgroundImage: `url(${gameBg})` }}
-		>
-			<div className="absolute inset-0 bg-[#1a1a2e]/95" />
-			<div className="relative z-10 min-h-screen flex flex-col items-center">
+		<StarfieldBackground>
+			<div className="flex flex-col items-center">
 				<div className="w-full max-w-3xl mx-auto px-4 flex flex-col">
 					{/* User info + sign out */}
 					<div className="flex justify-end items-center gap-2 py-4">
@@ -52,6 +48,6 @@ export function GameLayout({ children }: Readonly<{ children: ReactNode }>) {
 					<main className="pb-8">{children}</main>
 				</div>
 			</div>
-		</div>
+		</StarfieldBackground>
 	);
 }
