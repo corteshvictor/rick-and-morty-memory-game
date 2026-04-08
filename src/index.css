@@ -7,3 +7,487 @@ input::-webkit-credentials-auto-fill-button,
 input::-webkit-password-toggle-button {
 	display: none;
 }
+
+/* ============================================
+   Galactic Starfield Background
+   ============================================ */
+
+/* --- Capa 0: Gradiente galactico base ---
+ * Multiples radial-gradient crean zonas de color (purpura, azul, teal)
+ * sobre un linear-gradient oscuro. Esto reemplaza el bg-[#1a1a2e] plano.
+ */
+.galaxy-base {
+	position: absolute;
+	inset: 0;
+	background:
+		radial-gradient(
+			ellipse at 20% 50%,
+			rgba(30, 10, 60, 0.9) 0%,
+			transparent 50%
+		),
+		radial-gradient(
+			ellipse at 80% 20%,
+			rgba(10, 20, 60, 0.8) 0%,
+			transparent 45%
+		),
+		radial-gradient(
+			ellipse at 50% 90%,
+			rgba(5, 30, 50, 0.7) 0%,
+			transparent 50%
+		),
+		radial-gradient(
+			ellipse at 70% 60%,
+			rgba(40, 5, 40, 0.5) 0%,
+			transparent 40%
+		),
+		linear-gradient(
+			to bottom,
+			#050510 0%,
+			#0a0a20 40%,
+			#0d0820 70%,
+			#06050f 100%
+		);
+}
+
+/* --- Capa 1: Nebulosas de gas cosmico ---
+ * 5 manchas de color que flotan lentamente (30s).
+ * Purpura, azul, teal, rosa, azul claro — opacidades muy bajas.
+ */
+.nebula-layer {
+	position: absolute;
+	inset: 0;
+	background:
+		radial-gradient(
+			ellipse 700px 500px at 10% 40%,
+			rgba(120, 40, 200, 0.1),
+			transparent
+		),
+		radial-gradient(
+			ellipse 600px 400px at 85% 20%,
+			rgba(40, 80, 200, 0.09),
+			transparent
+		),
+		radial-gradient(
+			ellipse 500px 350px at 50% 85%,
+			rgba(20, 140, 120, 0.07),
+			transparent
+		),
+		radial-gradient(
+			ellipse 400px 300px at 30% 70%,
+			rgba(180, 50, 100, 0.06),
+			transparent
+		),
+		radial-gradient(
+			ellipse 300px 250px at 70% 50%,
+			rgba(60, 100, 220, 0.08),
+			transparent
+		);
+	animation: nebula-drift 30s ease-in-out infinite alternate;
+}
+
+/* --- Estrellas: base compartida para las 3 capas ---
+ * Cada capa es 1 solo div de 1x1px cuyo box-shadow genera las estrellas.
+ * El area es de 2000x1700px para cubrir pantallas grandes.
+ */
+.stars-layer {
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 1px;
+	height: 1px;
+	border-radius: 50%;
+	background: transparent;
+}
+
+/* --- Capa 2: ~90 estrellas lejanas (1px) ---
+ * Mayoria azuladas (#8eaaff) y blancas (#fff).
+ * Parpadeo lento (5s). Opacidad baja.
+ */
+.stars-far {
+	box-shadow:
+		50px 30px #8eaaff,
+		170px 80px #fff,
+		290px 150px #a0c4ff,
+		410px 40px #fff,
+		530px 200px #8eaaff,
+		650px 90px #fff,
+		770px 270px #a0c4ff,
+		890px 60px #fff,
+		1010px 180px #8eaaff,
+		1130px 300px #fff,
+		1250px 20px #a0c4ff,
+		1370px 240px #fff,
+		1490px 110px #8eaaff,
+		1610px 350px #fff,
+		1730px 70px #a0c4ff,
+		1850px 190px #fff,
+		100px 400px #fff,
+		220px 520px #8eaaff,
+		340px 430px #fff,
+		460px 610px #a0c4ff,
+		580px 500px #fff,
+		700px 380px #8eaaff,
+		820px 550px #fff,
+		940px 470px #a0c4ff,
+		1060px 630px #fff,
+		1180px 410px #8eaaff,
+		1300px 580px #fff,
+		1420px 490px #a0c4ff,
+		1540px 370px #fff,
+		1660px 640px #8eaaff,
+		1780px 420px #fff,
+		1900px 560px #a0c4ff,
+		70px 720px #fff,
+		190px 810px #8eaaff,
+		310px 750px #fff,
+		430px 890px #a0c4ff,
+		550px 780px #fff,
+		670px 700px #8eaaff,
+		790px 860px #fff,
+		910px 730px #a0c4ff,
+		1030px 900px #fff,
+		1150px 760px #8eaaff,
+		1270px 840px #fff,
+		1390px 710px #a0c4ff,
+		1510px 920px #fff,
+		1630px 800px #8eaaff,
+		1750px 870px #fff,
+		1870px 740px #a0c4ff,
+		130px 1000px #fff,
+		250px 1100px #8eaaff,
+		370px 1050px #fff,
+		490px 1180px #a0c4ff,
+		610px 1020px #fff,
+		730px 1150px #8eaaff,
+		850px 1080px #fff,
+		970px 1200px #a0c4ff,
+		1090px 1030px #fff,
+		1210px 1170px #8eaaff,
+		1330px 1060px #fff,
+		1450px 1190px #a0c4ff,
+		1570px 1010px #fff,
+		1690px 1140px #8eaaff,
+		1810px 1070px #fff,
+		1930px 1160px #a0c4ff,
+		80px 1300px #8eaaff,
+		200px 1400px #fff,
+		320px 1350px #a0c4ff,
+		440px 1480px #fff,
+		560px 1320px #8eaaff,
+		680px 1450px #fff,
+		800px 1380px #a0c4ff,
+		920px 1500px #fff,
+		1040px 1330px #8eaaff,
+		1160px 1470px #fff,
+		1280px 1360px #a0c4ff,
+		1400px 1490px #fff,
+		1520px 1310px #8eaaff,
+		1640px 1440px #fff,
+		1760px 1370px #a0c4ff,
+		1880px 1460px #fff,
+		40px 1550px #8eaaff,
+		350px 1600px #fff,
+		750px 1580px #a0c4ff,
+		1100px 1620px #fff,
+		1500px 1560px #8eaaff,
+		1850px 1590px #fff;
+	animation: twinkle-slow 5s ease-in-out infinite alternate;
+	opacity: 0.5;
+}
+
+/* --- Capa 3: ~45 estrellas medias (2px) ---
+ * Colores variados: azuladas, blancas, amarillentas, rojizas.
+ * Parpadeo medio (4s, desfasado 1s).
+ */
+.stars-mid {
+	box-shadow:
+		120px 60px 0 0.5px #ffe4a0,
+		380px 180px 0 0.5px #a0c4ff,
+		640px 120px 0 0.5px #fff,
+		900px 300px 0 0.5px #ffb0a0,
+		1160px 50px 0 0.5px #8eaaff,
+		1420px 220px 0 0.5px #ffe4a0,
+		1680px 160px 0 0.5px #fff,
+		1940px 280px 0 0.5px #a0c4ff,
+		200px 450px 0 0.5px #ffb0a0,
+		460px 550px 0 0.5px #fff,
+		720px 420px 0 0.5px #8eaaff,
+		980px 600px 0 0.5px #ffe4a0,
+		1240px 480px 0 0.5px #a0c4ff,
+		1500px 540px 0 0.5px #fff,
+		1760px 400px 0 0.5px #ffb0a0,
+		60px 650px 0 0.5px #8eaaff,
+		300px 800px 0 0.5px #ffe4a0,
+		560px 750px 0 0.5px #fff,
+		820px 880px 0 0.5px #a0c4ff,
+		1080px 720px 0 0.5px #ffb0a0,
+		1340px 850px 0 0.5px #8eaaff,
+		1600px 790px 0 0.5px #fff,
+		1860px 710px 0 0.5px #ffe4a0,
+		140px 900px 0 0.5px #a0c4ff,
+		400px 1050px 0 0.5px #fff,
+		660px 1120px 0 0.5px #ffb0a0,
+		920px 1000px 0 0.5px #8eaaff,
+		1180px 1150px 0 0.5px #ffe4a0,
+		1440px 1080px 0 0.5px #a0c4ff,
+		1700px 1020px 0 0.5px #fff,
+		250px 1250px 0 0.5px #ffb0a0,
+		510px 1350px 0 0.5px #8eaaff,
+		770px 1280px 0 0.5px #ffe4a0,
+		1030px 1400px 0 0.5px #fff,
+		1290px 1300px 0 0.5px #a0c4ff,
+		1550px 1380px 0 0.5px #ffb0a0,
+		1810px 1250px 0 0.5px #8eaaff,
+		100px 1450px 0 0.5px #ffe4a0,
+		700px 1500px 0 0.5px #fff,
+		1300px 1480px 0 0.5px #a0c4ff,
+		500px 1600px 0 0.5px #ffb0a0,
+		1000px 1550px 0 0.5px #8eaaff,
+		1600px 1580px 0 0.5px #ffe4a0,
+		1900px 1520px 0 0.5px #fff,
+		350px 1650px 0 0.5px #a0c4ff;
+	animation: twinkle-mid 4s ease-in-out 1s infinite alternate;
+	opacity: 0.6;
+}
+
+/* --- Capa 4: ~18 estrellas cercanas (3px con glow) ---
+ * Pocas, grandes, brillantes. blur=2px + spread=1px crean glow.
+ * Colores intensos con rgba para que el glow tenga color.
+ * Parpadeo rapido (3s, desfasado 0.5s).
+ */
+.stars-near {
+	box-shadow:
+		250px 100px 2px 1px rgba(160, 196, 255, 0.9),
+		750px 250px 2px 1px rgba(255, 228, 160, 0.8),
+		1250px 180px 2px 1px rgba(255, 255, 255, 0.9),
+		1750px 320px 2px 1px rgba(142, 170, 255, 0.8),
+		400px 500px 2px 1px rgba(255, 176, 160, 0.7),
+		1000px 450px 2px 1px rgba(255, 255, 255, 0.9),
+		1600px 550px 2px 1px rgba(160, 196, 255, 0.8),
+		180px 780px 2px 1px rgba(255, 228, 160, 0.9),
+		680px 900px 2px 1px rgba(142, 170, 255, 0.8),
+		1180px 820px 2px 1px rgba(255, 255, 255, 0.9),
+		500px 1200px 2px 1px rgba(255, 176, 160, 0.7),
+		1100px 1100px 2px 1px rgba(160, 196, 255, 0.9),
+		1500px 1300px 2px 1px rgba(255, 228, 160, 0.8),
+		300px 1450px 2px 1px rgba(255, 255, 255, 0.9),
+		900px 1380px 2px 1px rgba(142, 170, 255, 0.8),
+		1700px 1500px 2px 1px rgba(255, 176, 160, 0.7),
+		200px 1600px 2px 1px rgba(160, 196, 255, 0.9),
+		1400px 1650px 2px 1px rgba(255, 228, 160, 0.8);
+	animation: twinkle-fast 3s ease-in-out 0.5s infinite alternate;
+	opacity: 0.8;
+}
+
+/* ============================================
+   Shooting Stars (Estrellas Fugaces)
+   ============================================
+ *
+ * Cada shooting star es un div con:
+ * - width de 120-280px = la estela
+ * - height de 2px = el trazo
+ * - gradient azulado a blanco = estela con color
+ * - ::after = cabeza brillante con doble glow
+ * - rotacion 215deg = cae diagonal arriba-derecha a abajo-izquierda
+ * - animacion: aparece (3%), recorre 800px (15%), desaparece (18%), espera (100%)
+ */
+
+.shooting-star {
+	position: absolute;
+	height: 2px;
+	background: linear-gradient(
+		to right,
+		transparent,
+		rgba(160, 196, 255, 0.3),
+		rgba(160, 196, 255, 0.7),
+		rgba(255, 255, 255, 0.9)
+	);
+	border-radius: 999px;
+	opacity: 0;
+	transform: rotate(215deg);
+	filter: drop-shadow(0 0 4px rgba(160, 196, 255, 0.6));
+}
+
+/* Cabeza brillante: circulo blanco con glow doble (azul cercano + azul difuso) */
+.shooting-star::after {
+	content: "";
+	position: absolute;
+	right: -2px;
+	top: 50%;
+	transform: translateY(-50%);
+	width: 5px;
+	height: 5px;
+	background: white;
+	border-radius: 50%;
+	box-shadow:
+		0 0 8px 3px rgba(160, 196, 255, 0.8),
+		0 0 20px 6px rgba(100, 140, 255, 0.3);
+}
+
+/* 5 estrellas fugaces distribuidas por TODA la altura de la pantalla */
+.shooting-star-1 {
+	top: 5%;
+	right: 5%;
+	width: 220px;
+	animation: shoot 6s ease-in-out 1s infinite;
+}
+
+.shooting-star-2 {
+	top: 35%;
+	right: 25%;
+	width: 180px;
+	animation: shoot 8s ease-in-out 4s infinite;
+}
+
+.shooting-star-3 {
+	top: 55%;
+	right: 55%;
+	width: 280px;
+	animation: shoot 7s ease-in-out 9s infinite;
+}
+
+.shooting-star-4 {
+	top: 75%;
+	right: 15%;
+	width: 160px;
+	animation: shoot 9s ease-in-out 14s infinite;
+}
+
+.shooting-star-5 {
+	top: 45%;
+	right: 75%;
+	width: 240px;
+	animation: shoot 7s ease-in-out 18s infinite;
+}
+
+/* Portal glow verde (tematico Rick & Morty) — usa ::after en .starfield-bg */
+.starfield-bg::after {
+	content: "";
+	position: absolute;
+	bottom: -20%;
+	right: -10%;
+	width: 500px;
+	height: 500px;
+	background: radial-gradient(circle, rgba(76, 175, 80, 0.08), transparent 70%);
+	border-radius: 50%;
+	animation: portal-pulse 10s ease-in-out infinite alternate;
+	pointer-events: none;
+}
+
+/* ============================================
+   Keyframes
+   ============================================ */
+
+/* Estrellas lejanas: parpadeo suave y lento */
+@keyframes twinkle-slow {
+	0% {
+		opacity: 0.3;
+	}
+	100% {
+		opacity: 0.6;
+	}
+}
+
+/* Estrellas medias: parpadeo moderado */
+@keyframes twinkle-mid {
+	0% {
+		opacity: 0.4;
+	}
+	100% {
+		opacity: 0.75;
+	}
+}
+
+/* Estrellas cercanas: parpadeo intenso */
+@keyframes twinkle-fast {
+	0% {
+		opacity: 0.5;
+	}
+	100% {
+		opacity: 1;
+	}
+}
+
+/* Nebulosa: flota lentamente */
+@keyframes nebula-drift {
+	0% {
+		transform: scale(1) translate(0, 0);
+		opacity: 0.8;
+	}
+	50% {
+		opacity: 1;
+	}
+	100% {
+		transform: scale(1.08) translate(20px, -15px);
+		opacity: 0.8;
+	}
+}
+
+/* Estrella fugaz: aparece, recorre, desaparece, espera */
+@keyframes shoot {
+	0% {
+		opacity: 0;
+		transform: rotate(215deg) translateX(0);
+	}
+	3% {
+		opacity: 1;
+	}
+	15% {
+		opacity: 0.8;
+		transform: rotate(215deg) translateX(800px);
+	}
+	18% {
+		opacity: 0;
+		transform: rotate(215deg) translateX(900px);
+	}
+	100% {
+		opacity: 0;
+	}
+}
+
+/* Portal verde: pulsa suavemente */
+@keyframes portal-pulse {
+	0% {
+		opacity: 0.3;
+		transform: scale(1);
+	}
+	100% {
+		opacity: 0.7;
+		transform: scale(1.2);
+	}
+}
+
+/* ============================================
+   Accesibilidad: desactivar movimiento
+   ============================================ */
+
+@media (prefers-reduced-motion: reduce) {
+	.stars-far,
+	.stars-mid,
+	.stars-near {
+		animation: none;
+	}
+
+	.stars-far {
+		opacity: 0.5;
+	}
+	.stars-mid {
+		opacity: 0.6;
+	}
+	.stars-near {
+		opacity: 0.8;
+	}
+
+	.nebula-layer {
+		animation: none;
+	}
+
+	.shooting-star {
+		display: none;
+	}
+
+	.starfield-bg::after {
+		animation: none;
+		opacity: 0.4;
+	}
+}
