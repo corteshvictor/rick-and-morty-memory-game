@@ -1,7 +1,7 @@
 import { type Meta, type StoryObj } from "@storybook/react-vite";
 import { expect, fn, userEvent, within } from "storybook/test";
-import { GameHeader } from "./GameHeader";
 import { GAME_MODE } from "@/game/domain/multiplayer.model";
+import { GameHeader } from "./GameHeader";
 
 const meta = {
 	title: "Game/GameHeader",
@@ -19,6 +19,7 @@ const meta = {
 	],
 	args: {
 		matches: 0,
+		totalPairs: 6,
 		turns: 0,
 		onRestart: fn(),
 		canRestart: true,
@@ -77,7 +78,7 @@ export const DisplaysStats: Story = {
 	play: async ({ canvasElement }) => {
 		const canvas = within(canvasElement);
 
-		await expect(canvas.getByText("4")).toBeVisible();
+		await expect(canvas.getByText("4/6")).toBeVisible();
 		await expect(canvas.getByText("12")).toBeVisible();
 	},
 };

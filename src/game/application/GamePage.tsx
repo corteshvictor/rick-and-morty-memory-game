@@ -3,6 +3,7 @@ import { GAME_PHASE } from "@/game/domain/game.model";
 import { Button } from "@/shared/ui/Button";
 import { notifyError } from "@/shared/ui/notifications";
 import { Spinner } from "@/shared/ui/Spinner";
+import { DifficultySelector } from "./DifficultySelector";
 import { GameBoard } from "./GameBoard";
 import { GameHeader } from "./GameHeader";
 import { GameOverModal } from "./GameOverModal";
@@ -30,6 +31,11 @@ export function GamePage() {
 		selectSingleMode,
 		selectVersusMode,
 		changeMode,
+		showDifficultySelector,
+		difficulty,
+		shuffleSwaps,
+		selectDifficulty,
+		changeDifficulty,
 	} = useGame();
 
 	useEffect(() => {
@@ -44,6 +50,14 @@ export function GamePage() {
 					onSelectSingle={selectSingleMode}
 					onSelectVersus={selectVersusMode}
 				/>
+			</div>
+		);
+	}
+
+	if (showDifficultySelector) {
+		return (
+			<div className="bg-amber-50 rounded-2xl p-3 sm:p-6 shadow-lg">
+				<DifficultySelector onSelect={selectDifficulty} />
 			</div>
 		);
 	}
@@ -72,6 +86,7 @@ export function GamePage() {
 		<div className="bg-amber-50 rounded-2xl p-3 sm:p-6 shadow-lg">
 			<GameHeader
 				matches={stats.matches}
+				totalPairs={stats.totalPairs}
 				turns={stats.turns}
 				onRestart={restart}
 				canRestart={phase === GAME_PHASE.PLAYING}
@@ -85,15 +100,19 @@ export function GamePage() {
 				onFlip={flipCard}
 				onShuffleComplete={endShuffle}
 				disabled={isDisabled}
+				difficulty={difficulty}
+				shuffleSwaps={shuffleSwaps}
 			/>
 			<GameOverModal
 				open={phase === GAME_PHASE.COMPLETED}
 				turns={stats.turns}
+				difficulty={difficulty}
 				onReplay={replay}
 				mode={mode}
 				winner={winner}
 				versus={versus ?? undefined}
 				onChangeMode={changeMode}
+				onChangeDifficulty={changeDifficulty}
 			/>
 		</div>
 	);

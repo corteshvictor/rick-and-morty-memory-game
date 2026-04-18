@@ -11,26 +11,34 @@ import {
 import { Button } from "@/shared/ui/Button";
 import { Modal } from "@/shared/ui/Modal";
 import { Spinner } from "@/shared/ui/Spinner";
+import {
+	DIFFICULTY_CONFIGS,
+	type DifficultyLevel,
+} from "../domain/difficulty.model";
 import { useGameStore } from "./game.store";
 
 interface GameOverModalProps {
 	open: boolean;
 	turns: number;
+	difficulty: DifficultyLevel;
 	onReplay: () => void;
 	mode: GameMode;
 	winner?: Player | null; // Player=ganador, null=empate, undefined=single
 	versus?: VersusState;
 	onChangeMode?: () => void;
+	onChangeDifficulty: () => void;
 }
 
 export function GameOverModal({
 	open,
 	turns,
+	difficulty,
 	onReplay,
 	mode,
 	winner,
 	versus,
 	onChangeMode,
+	onChangeDifficulty,
 }: Readonly<GameOverModalProps>) {
 	const navigate = useNavigate();
 	const signOut = useAuthStore((s) => s.signOut);
@@ -88,6 +96,13 @@ export function GameOverModal({
 								{versus.players[1].name}: {versus.players[1].matches} pares
 							</span>
 						</div>
+						<p className="text-gray-600 text-sm">
+							Nivel{" "}
+							<span className="font-bold text-green-600">
+								{DIFFICULTY_CONFIGS[difficulty].label}
+							</span>{" "}
+							· <span className="font-bold text-green-600">{turns}</span> turnos
+						</p>
 					</>
 				) : (
 					<>
@@ -95,15 +110,27 @@ export function GameOverModal({
 							¡Felicitaciones!
 						</h2>
 						<p className="text-gray-600 text-lg">
-							Completaste el juego en{" "}
-							<span className="font-bold text-green-600">{turns}</span> turnos
+							Completaste el nivel{" "}
+							<span className="font-bold text-green-600">
+								{DIFFICULTY_CONFIGS[difficulty].label}
+							</span>{" "}
+							en <span className="font-bold text-green-600">{turns}</span>{" "}
+							turnos
 						</p>
 					</>
 				)}
 
-				<div className="flex gap-4 w-full">
+				<div className="flex flex-col sm:flex-row gap-3 w-full">
 					<Button onClick={onReplay} disabled={signingOut} className="flex-1">
 						Repetir
+					</Button>
+					<Button
+						variant="outline"
+						onClick={onChangeDifficulty}
+						disabled={signingOut}
+						className="flex-1"
+					>
+						Cambiar dificultad
 					</Button>
 					{isVersus && onChangeMode ? (
 						<Button

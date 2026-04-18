@@ -28,8 +28,13 @@ function selectSingleMode() {
 	fireEvent.click(screen.getByRole("button", { name: /un jugador/i }));
 }
 
+function selectMediumDifficulty() {
+	fireEvent.click(screen.getByRole("button", { name: /medio/i }));
+}
+
 async function advanceToPlayingPhase() {
 	selectSingleMode();
+	selectMediumDifficulty();
 	await act(async () => {
 		await vi.advanceTimersByTimeAsync(100);
 	});
@@ -55,14 +60,13 @@ describe("GamePage", () => {
 		expect(
 			screen.getByRole("button", { name: /un jugador/i }),
 		).toBeInTheDocument();
-		expect(
-			screen.getByRole("button", { name: /versus/i }),
-		).toBeInTheDocument();
+		expect(screen.getByRole("button", { name: /versus/i })).toBeInTheDocument();
 	});
 
 	it("shows loading spinner while fetching characters", () => {
 		renderGamePage();
 		selectSingleMode();
+		selectMediumDifficulty();
 
 		expect(screen.getByText("Cargando personajes...")).toBeInTheDocument();
 	});
