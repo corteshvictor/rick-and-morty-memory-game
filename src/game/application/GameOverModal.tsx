@@ -22,11 +22,10 @@ interface GameOverModalProps {
 	turns: number;
 	difficulty: DifficultyLevel;
 	onReplay: () => void;
+	onOpenSettings: () => void;
 	mode: GameMode;
 	winner?: Player | null; // Player=ganador, null=empate, undefined=single
 	versus?: VersusState;
-	onChangeMode?: () => void;
-	onChangeDifficulty: () => void;
 }
 
 export function GameOverModal({
@@ -34,11 +33,10 @@ export function GameOverModal({
 	turns,
 	difficulty,
 	onReplay,
+	onOpenSettings,
 	mode,
 	winner,
 	versus,
-	onChangeMode,
-	onChangeDifficulty,
 }: Readonly<GameOverModalProps>) {
 	const navigate = useNavigate();
 	const signOut = useAuthStore((s) => s.signOut);
@@ -51,12 +49,10 @@ export function GameOverModal({
 		if (!open) return;
 
 		if (isVersus && winner) {
-			// Confetti con color del ganador
 			const colors =
 				winner.id === 1 ? ["#3b82f6", "#60a5fa"] : ["#ef4444", "#f87171"];
 			confetti({ particleCount: 200, spread: 100, origin: { y: 0.6 }, colors });
 		} else if (isVersus && winner === null) {
-			// Empate — confetti bicolor
 			confetti({
 				particleCount: 200,
 				spread: 100,
@@ -64,7 +60,6 @@ export function GameOverModal({
 				colors: ["#3b82f6", "#ef4444"],
 			});
 		} else {
-			// Single mode — confetti normal
 			confetti({ particleCount: 200, spread: 100, origin: { y: 0.6 } });
 		}
 	}, [open, isVersus, winner]);
@@ -126,31 +121,20 @@ export function GameOverModal({
 					</Button>
 					<Button
 						variant="outline"
-						onClick={onChangeDifficulty}
+						onClick={onOpenSettings}
 						disabled={signingOut}
 						className="flex-1"
 					>
-						Cambiar dificultad
+						Cambiar ajustes
 					</Button>
-					{isVersus && onChangeMode ? (
-						<Button
-							variant="outline"
-							onClick={onChangeMode}
-							disabled={signingOut}
-							className="flex-1"
-						>
-							Cambiar modo
-						</Button>
-					) : (
-						<Button
-							variant="outline"
-							onClick={handleGoHome}
-							disabled={signingOut}
-							className="flex-1"
-						>
-							{signingOut ? <Spinner size="base" /> : "Inicio"}
-						</Button>
-					)}
+					<Button
+						variant="outline"
+						onClick={handleGoHome}
+						disabled={signingOut}
+						className="flex-1"
+					>
+						{signingOut ? <Spinner size="base" /> : "Inicio"}
+					</Button>
 				</div>
 			</div>
 		</Modal>

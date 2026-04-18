@@ -1,13 +1,11 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import { generateBoard } from "@/game/domain/board-generator";
-import {
-	DIFFICULTY_CONFIGS,
-	type DifficultyLevel,
-} from "@/game/domain/difficulty.model";
+import { DIFFICULTY_CONFIGS } from "@/game/domain/difficulty.model";
 import { GAME_PHASE } from "@/game/domain/game.model";
 import { GAME_MODE } from "@/game/domain/multiplayer.model";
 import { getWinner } from "@/game/domain/turn-manager";
 import { useCharactersQuery } from "@/game/infrastructure/character.queries";
+import { type GameSettingsValues } from "./GameSettings";
 import { useGameStore } from "./game.store";
 
 export function useGame() {
@@ -35,8 +33,7 @@ export function useGame() {
 		refetch,
 	} = useCharactersQuery(pairCount);
 	const hasStarted = useRef(false);
-	const [showModeSelector, setShowModeSelector] = useState(true);
-	const [showDifficultySelector, setShowDifficultySelector] = useState(true);
+	const [showSettings, setShowSettings] = useState(true);
 
 	useEffect(() => {
 		reset();
@@ -50,16 +47,11 @@ export function useGame() {
 	}, [characters, startGame]);
 
 	useEffect(() => {
-		if (
-			characters &&
-			!hasStarted.current &&
-			!showModeSelector &&
-			!showDifficultySelector
-		) {
+		if (characters && !hasStarted.current && !showSettings) {
 			hasStarted.current = true;
 			start();
 		}
-	}, [characters, start, showModeSelector, showDifficultySelector]);
+	}, [characters, start, showSettings]);
 
 	const restart = useCallback(() => {
 		if (!characters) return;
@@ -75,38 +67,23 @@ export function useGame() {
 		}
 	}, [refetch, startGame]);
 
-	const selectSingleMode = useCallback(() => {
-		setMode(GAME_MODE.SINGLE);
-		setShowModeSelector(false);
-	}, [setMode]);
-
-	const selectVersusMode = useCallback(
-		(name1: string, name2: string) => {
-			setupVersus(name1, name2);
-			setShowModeSelector(false);
+	const startWithSettings = useCallback(
+		(settings: GameSettingsValues) => {
+			if (settings.mode === GAME_MODE.VERSUS && settings.versusNames) {
+				setupVersus(settings.versusNames.name1, settings.versusNames.name2);
+			} else {
+				setMode(GAME_MODE.SINGLE);
+			}
+			selectDifficulty(settings.difficulty);
+			setShowSettings(false);
 		},
-		[setupVersus],
+		[setMode, setupVersus, selectDifficulty],
 	);
 
-	const changeMode = useCallback(() => {
+	const openSettings = useCallback(() => {
 		reset();
 		hasStarted.current = false;
-		setShowModeSelector(true);
-		setShowDifficultySelector(true);
-	}, [reset]);
-
-	const handleSelectDifficulty = useCallback(
-		(level: DifficultyLevel) => {
-			selectDifficulty(level);
-			setShowDifficultySelector(false);
-		},
-		[selectDifficulty],
-	);
-
-	const changeDifficulty = useCallback(() => {
-		reset();
-		hasStarted.current = false;
-		setShowDifficultySelector(true);
+		setShowSettings(true);
 	}, [reset]);
 
 	const isDisabled =
@@ -136,14 +113,10 @@ export function useGame() {
 		mode,
 		versus,
 		winner,
-		showModeSelector,
-		selectSingleMode,
-		selectVersusMode,
-		changeMode,
 		difficulty,
-		showDifficultySelector,
-		selectDifficulty: handleSelectDifficulty,
-		changeDifficulty,
+		showSettings,
+		startWithSettings,
+		openSettings,
 		shuffleSwaps: DIFFICULTY_CONFIGS[difficulty].shuffleSwaps,
 	};
 }

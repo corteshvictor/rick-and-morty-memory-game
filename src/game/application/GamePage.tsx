@@ -3,11 +3,10 @@ import { GAME_PHASE } from "@/game/domain/game.model";
 import { Button } from "@/shared/ui/Button";
 import { notifyError } from "@/shared/ui/notifications";
 import { Spinner } from "@/shared/ui/Spinner";
-import { DifficultySelector } from "./DifficultySelector";
 import { GameBoard } from "./GameBoard";
 import { GameHeader } from "./GameHeader";
 import { GameOverModal } from "./GameOverModal";
-import { ModeSelector } from "./ModeSelector";
+import { GameSettings } from "./GameSettings";
 import { useGame } from "./useGame";
 
 export function GamePage() {
@@ -27,15 +26,11 @@ export function GamePage() {
 		mode,
 		versus,
 		winner,
-		showModeSelector,
-		selectSingleMode,
-		selectVersusMode,
-		changeMode,
-		showDifficultySelector,
+		showSettings,
 		difficulty,
 		shuffleSwaps,
-		selectDifficulty,
-		changeDifficulty,
+		startWithSettings,
+		openSettings,
 	} = useGame();
 
 	useEffect(() => {
@@ -43,21 +38,16 @@ export function GamePage() {
 		notifyError({ message: error, title: "Error del juego" });
 	}, [error, errorUpdatedAt]);
 
-	if (showModeSelector) {
+	if (showSettings) {
 		return (
 			<div className="bg-amber-50 rounded-2xl p-3 sm:p-6 shadow-lg">
-				<ModeSelector
-					onSelectSingle={selectSingleMode}
-					onSelectVersus={selectVersusMode}
+				<GameSettings
+					initialMode={mode}
+					initialDifficulty={difficulty}
+					initialName1={versus?.players[0].name ?? ""}
+					initialName2={versus?.players[1].name ?? ""}
+					onStart={startWithSettings}
 				/>
-			</div>
-		);
-	}
-
-	if (showDifficultySelector) {
-		return (
-			<div className="bg-amber-50 rounded-2xl p-3 sm:p-6 shadow-lg">
-				<DifficultySelector onSelect={selectDifficulty} />
 			</div>
 		);
 	}
@@ -111,8 +101,7 @@ export function GamePage() {
 				mode={mode}
 				winner={winner}
 				versus={versus ?? undefined}
-				onChangeMode={changeMode}
-				onChangeDifficulty={changeDifficulty}
+				onOpenSettings={openSettings}
 			/>
 		</div>
 	);
