@@ -70,6 +70,13 @@ export function GameSettings({
 		onStart({ mode, difficulty });
 	};
 
+	const handleReset = () => {
+		setMode(GAME_MODE.SINGLE);
+		setDifficulty(DEFAULT_DIFFICULTY);
+		setName1("");
+		setName2("");
+	};
+
 	const difficulties = Object.values(DIFFICULTY_CONFIGS);
 
 	return (
@@ -125,6 +132,11 @@ export function GameSettings({
 							<span className="text-xs text-gray-500">
 								{cfg.totalPairs} pares
 							</span>
+							{cfg.level === DEFAULT_DIFFICULTY && (
+								<span className="text-[10px] font-semibold text-green-700 uppercase tracking-wide">
+									Sugerido
+								</span>
+							)}
 						</button>
 					))}
 				</div>
@@ -172,9 +184,18 @@ export function GameSettings({
 				</fieldset>
 			)}
 
-			<Button type="submit" className="w-full">
-				Comenzar juego
-			</Button>
+			<div className="flex flex-col items-center gap-3">
+				<Button type="submit" className="w-full">
+					Comenzar juego
+				</Button>
+				<button
+					type="button"
+					onClick={handleReset}
+					className="text-sm text-gray-500 hover:text-gray-700 underline-offset-2 hover:underline cursor-pointer transition-colors"
+				>
+					Restablecer
+				</button>
+			</div>
 		</form>
 	);
 }

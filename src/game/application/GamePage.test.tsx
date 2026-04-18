@@ -45,7 +45,7 @@ describe("GamePage", () => {
 
 	afterEach(() => {
 		vi.useRealTimers();
-		useGameStore.getState().reset();
+		useGameStore.getState().clear();
 	});
 
 	it("shows game settings form on initial render", () => {

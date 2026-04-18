@@ -193,8 +193,6 @@ export function transition(state: GameState, action: GameAction): GameState {
 			return handleMatchFound(state);
 		case GAME_ACTION.MATCH_FAILED:
 			return handleMatchFailed(state);
-		case GAME_ACTION.RESET:
-			return { ...createInitialState(), difficulty: state.difficulty };
 		case GAME_ACTION.SET_MODE:
 			return handleSetMode(state, action.mode);
 		case GAME_ACTION.SETUP_VERSUS:

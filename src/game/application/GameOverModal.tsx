@@ -41,7 +41,7 @@ export function GameOverModal({
 	const navigate = useNavigate();
 	const signOut = useAuthStore((s) => s.signOut);
 	const signingOut = useAuthStore((s) => s.signingOut);
-	const resetGame = useGameStore((s) => s.reset);
+	const clearGame = useGameStore((s) => s.clear);
 
 	const isVersus = mode === GAME_MODE.VERSUS;
 
@@ -65,7 +65,7 @@ export function GameOverModal({
 	}, [open, isVersus, winner]);
 
 	const handleGoHome = async () => {
-		resetGame();
+		clearGame();
 		await signOut();
 		navigate("/login");
 	};

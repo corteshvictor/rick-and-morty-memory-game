@@ -17,7 +17,8 @@ interface GameStore extends GameState {
 	startGame: (cards: Card[]) => void;
 	endShuffle: () => void;
 	flipCard: (cardId: string) => void;
-	reset: () => void;
+	clear: () => void;
+	backToSettings: () => void;
 	setMode: (mode: GameMode) => void;
 	setupVersus: (name1: string, name2: string) => void;
 	selectDifficulty: (level: DifficultyLevel) => void;
@@ -100,9 +101,15 @@ export const useGameStore = create<GameStore>((set, get) => ({
 		}
 	},
 
-	reset: () => {
+	clear: () => {
 		clearPreviewTimer();
 		set(createInitialState());
+	},
+
+	backToSettings: () => {
+		clearPreviewTimer();
+		const { mode, versus, difficulty } = get();
+		set({ ...createInitialState(), mode, versus, difficulty });
 	},
 
 	setMode: (mode) => {

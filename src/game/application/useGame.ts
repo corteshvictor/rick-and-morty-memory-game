@@ -19,7 +19,8 @@ export function useGame() {
 		startGame,
 		endShuffle,
 		flipCard,
-		reset,
+		clear,
+		backToSettings,
 		setMode,
 		setupVersus,
 		selectDifficulty,
@@ -36,9 +37,9 @@ export function useGame() {
 	const [showSettings, setShowSettings] = useState(true);
 
 	useEffect(() => {
-		reset();
+		clear();
 		hasStarted.current = false;
-	}, [reset]);
+	}, [clear]);
 
 	const start = useCallback(() => {
 		if (!characters) return;
@@ -81,10 +82,10 @@ export function useGame() {
 	);
 
 	const openSettings = useCallback(() => {
-		reset();
+		backToSettings();
 		hasStarted.current = false;
 		setShowSettings(true);
-	}, [reset]);
+	}, [backToSettings]);
 
 	const isDisabled =
 		phase === GAME_PHASE.SHUFFLING ||

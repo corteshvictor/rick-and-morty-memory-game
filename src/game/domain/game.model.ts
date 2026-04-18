@@ -35,7 +35,6 @@ export const GAME_ACTION = {
 	FLIP_CARD: "FLIP_CARD",
 	MATCH_FOUND: "MATCH_FOUND",
 	MATCH_FAILED: "MATCH_FAILED",
-	RESET: "RESET",
 	SET_MODE: "SET_MODE",
 	SETUP_VERSUS: "SETUP_VERSUS",
 	SELECT_DIFFICULTY: "SELECT_DIFFICULTY",
@@ -48,7 +47,6 @@ export type GameAction =
 	| { type: typeof GAME_ACTION.FLIP_CARD; cardId: string }
 	| { type: typeof GAME_ACTION.MATCH_FOUND }
 	| { type: typeof GAME_ACTION.MATCH_FAILED }
-	| { type: typeof GAME_ACTION.RESET }
 	| { type: typeof GAME_ACTION.SET_MODE; mode: GameMode }
 	| { type: typeof GAME_ACTION.SETUP_VERSUS; name1: string; name2: string }
 	| { type: typeof GAME_ACTION.SELECT_DIFFICULTY; difficulty: DifficultyLevel };
