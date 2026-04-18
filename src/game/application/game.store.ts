@@ -2,23 +2,32 @@ import { create } from "zustand";
 import { type Card } from "@/game/domain/card.model";
 import { doCardsMatch } from "@/game/domain/card-matching";
 import {
+	DIFFICULTY_CONFIGS,
+	type DifficultyLevel,
+} from "@/game/domain/difficulty.model";
+import {
 	GAME_ACTION,
 	GAME_PHASE,
 	type GameState,
 } from "@/game/domain/game.model";
-import { createInitialState, transition } from "@/game/domain/game-engine";
+import {
+	createInitialState,
+	createStateBackToSettings,
+	transition,
+} from "@/game/domain/game-engine";
 import { type GameMode, PLAYER_ID } from "../domain/multiplayer.model";
 
 interface GameStore extends GameState {
 	startGame: (cards: Card[]) => void;
 	endShuffle: () => void;
 	flipCard: (cardId: string) => void;
-	reset: () => void;
+	clear: () => void;
+	backToSettings: () => void;
 	setMode: (mode: GameMode) => void;
 	setupVersus: (name1: string, name2: string) => void;
+	selectDifficulty: (level: DifficultyLevel) => void;
 }
 
-const PREVIEW_DURATION = 3000;
 const COMPARISON_DURATION = 1000;
 
 let previewTimerId: ReturnType<typeof setTimeout> | null = null;
@@ -38,11 +47,12 @@ export const useGameStore = create<GameStore>((set, get) => ({
 		const current = get();
 		let base: GameState = current;
 		if (current.phase !== GAME_PHASE.IDLE) {
-			// Reset to IDLE preserving mode and player names (matches reset to 0)
+			// Reset to IDLE preserving mode, player names and difficulty (matches reset to 0)
 			const initial = createInitialState();
 			base = {
 				...initial,
 				mode: current.mode,
+				difficulty: current.difficulty,
 				versus: current.versus
 					? {
 							players: [
@@ -61,12 +71,13 @@ export const useGameStore = create<GameStore>((set, get) => ({
 	endShuffle: () => {
 		const next = transition(get(), { type: GAME_ACTION.END_SHUFFLE });
 		set(next);
+		const previewTime = DIFFICULTY_CONFIGS[next.difficulty].previewTime;
 
 		previewTimerId = setTimeout(() => {
 			previewTimerId = null;
 			const afterPreview = transition(get(), { type: GAME_ACTION.END_PREVIEW });
 			set(afterPreview);
-		}, PREVIEW_DURATION);
+		}, previewTime);
 	},
 
 	flipCard: (cardId) => {
@@ -94,19 +105,34 @@ export const useGameStore = create<GameStore>((set, get) => ({
 		}
 	},
 
-	reset: () => {
+	clear: () => {
 		clearPreviewTimer();
 		set(createInitialState());
 	},
+
+	backToSettings: () => {
+		clearPreviewTimer();
+		set(createStateBackToSettings(get()));
+	},
+
 	setMode: (mode) => {
 		const next = transition(get(), { type: GAME_ACTION.SET_MODE, mode });
 		set(next);
 	},
+
 	setupVersus: (name1, name2) => {
 		const next = transition(get(), {
 			type: GAME_ACTION.SETUP_VERSUS,
 			name1,
 			name2,
+		});
+		set(next);
+	},
+
+	selectDifficulty: (level) => {
+		const next = transition(get(), {
+			type: GAME_ACTION.SELECT_DIFFICULTY,
+			difficulty: level,
 		});
 		set(next);
 	},

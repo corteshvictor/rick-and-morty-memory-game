@@ -1,5 +1,9 @@
 import { type Card } from "@/game/domain/card.model";
 import { type GamePhase } from "@/game/domain/game.model";
+import {
+	DIFFICULTY_LEVEL,
+	type DifficultyLevel,
+} from "../domain/difficulty.model";
 import { GameCard } from "./GameCard";
 import { type SwapTransform, useShuffleAnimation } from "./useShuffleAnimation";
 
@@ -9,7 +13,15 @@ interface GameBoardProps {
 	onFlip: (cardId: string) => void;
 	onShuffleComplete: () => void;
 	disabled: boolean;
+	difficulty: DifficultyLevel;
+	shuffleSwaps: number;
 }
+
+const GRID_CLASSES: Record<DifficultyLevel, string> = {
+	[DIFFICULTY_LEVEL.EASY]: "grid-cols-3 sm:grid-cols-4",
+	[DIFFICULTY_LEVEL.MEDIUM]: "grid-cols-3 sm:grid-cols-4",
+	[DIFFICULTY_LEVEL.HARD]: "grid-cols-4 sm:grid-cols-5",
+};
 
 function getSwapClasses(transform: SwapTransform) {
 	return [
@@ -24,18 +36,23 @@ export function GameBoard({
 	onFlip,
 	onShuffleComplete,
 	disabled,
+	difficulty,
+	shuffleSwaps,
 }: Readonly<GameBoardProps>) {
 	const { displayCards, swapTransforms, gridRef } = useShuffleAnimation(
 		cards,
 		phase,
 		onShuffleComplete,
+		shuffleSwaps,
 	);
 
+	const gridClass = GRID_CLASSES[difficulty];
+
 	return (
-		<div ref={gridRef} className="grid grid-cols-4 gap-2 sm:gap-4 w-full">
+		<div ref={gridRef} className={`grid ${gridClass} gap-2 sm:gap-4 w-full`}>
 			{displayCards.map((card) => {
 				const transform = swapTransforms[card.id];
-				const isSwapping = !!transform;
+				const isSwapping = Boolean(transform);
 
 				return (
 					<div

@@ -11,31 +11,37 @@ import {
 import { Button } from "@/shared/ui/Button";
 import { Modal } from "@/shared/ui/Modal";
 import { Spinner } from "@/shared/ui/Spinner";
+import {
+	DIFFICULTY_CONFIGS,
+	type DifficultyLevel,
+} from "../domain/difficulty.model";
 import { useGameStore } from "./game.store";
 
 interface GameOverModalProps {
 	open: boolean;
 	turns: number;
+	difficulty: DifficultyLevel;
 	onReplay: () => void;
+	onOpenSettings: () => void;
 	mode: GameMode;
 	winner?: Player | null; // Player=ganador, null=empate, undefined=single
 	versus?: VersusState;
-	onChangeMode?: () => void;
 }
 
 export function GameOverModal({
 	open,
 	turns,
+	difficulty,
 	onReplay,
+	onOpenSettings,
 	mode,
 	winner,
 	versus,
-	onChangeMode,
 }: Readonly<GameOverModalProps>) {
 	const navigate = useNavigate();
 	const signOut = useAuthStore((s) => s.signOut);
 	const signingOut = useAuthStore((s) => s.signingOut);
-	const resetGame = useGameStore((s) => s.reset);
+	const clearGame = useGameStore((s) => s.clear);
 
 	const isVersus = mode === GAME_MODE.VERSUS;
 
@@ -43,12 +49,10 @@ export function GameOverModal({
 		if (!open) return;
 
 		if (isVersus && winner) {
-			// Confetti con color del ganador
 			const colors =
 				winner.id === 1 ? ["#3b82f6", "#60a5fa"] : ["#ef4444", "#f87171"];
 			confetti({ particleCount: 200, spread: 100, origin: { y: 0.6 }, colors });
 		} else if (isVersus && winner === null) {
-			// Empate — confetti bicolor
 			confetti({
 				particleCount: 200,
 				spread: 100,
@@ -56,13 +60,12 @@ export function GameOverModal({
 				colors: ["#3b82f6", "#ef4444"],
 			});
 		} else {
-			// Single mode — confetti normal
 			confetti({ particleCount: 200, spread: 100, origin: { y: 0.6 } });
 		}
 	}, [open, isVersus, winner]);
 
 	const handleGoHome = async () => {
-		resetGame();
+		clearGame();
 		await signOut();
 		navigate("/login");
 	};
@@ -88,6 +91,13 @@ export function GameOverModal({
 								{versus.players[1].name}: {versus.players[1].matches} pares
 							</span>
 						</div>
+						<p className="text-gray-600 text-sm">
+							Nivel{" "}
+							<span className="font-bold text-green-600">
+								{DIFFICULTY_CONFIGS[difficulty].label}
+							</span>{" "}
+							· <span className="font-bold text-green-600">{turns}</span> turnos
+						</p>
 					</>
 				) : (
 					<>
@@ -95,35 +105,36 @@ export function GameOverModal({
 							¡Felicitaciones!
 						</h2>
 						<p className="text-gray-600 text-lg">
-							Completaste el juego en{" "}
-							<span className="font-bold text-green-600">{turns}</span> turnos
+							Completaste el nivel{" "}
+							<span className="font-bold text-green-600">
+								{DIFFICULTY_CONFIGS[difficulty].label}
+							</span>{" "}
+							en <span className="font-bold text-green-600">{turns}</span>{" "}
+							turnos
 						</p>
 					</>
 				)}
 
-				<div className="flex gap-4 w-full">
+				<div className="flex flex-col sm:flex-row gap-3 w-full">
 					<Button onClick={onReplay} disabled={signingOut} className="flex-1">
 						Repetir
 					</Button>
-					{isVersus && onChangeMode ? (
-						<Button
-							variant="outline"
-							onClick={onChangeMode}
-							disabled={signingOut}
-							className="flex-1"
-						>
-							Cambiar modo
-						</Button>
-					) : (
-						<Button
-							variant="outline"
-							onClick={handleGoHome}
-							disabled={signingOut}
-							className="flex-1"
-						>
-							{signingOut ? <Spinner size="base" /> : "Inicio"}
-						</Button>
-					)}
+					<Button
+						variant="outline"
+						onClick={onOpenSettings}
+						disabled={signingOut}
+						className="flex-1"
+					>
+						Cambiar ajustes
+					</Button>
+					<Button
+						variant="outline"
+						onClick={handleGoHome}
+						disabled={signingOut}
+						className="flex-1"
+					>
+						{signingOut ? <Spinner size="base" /> : "Inicio"}
+					</Button>
 				</div>
 			</div>
 		</Modal>

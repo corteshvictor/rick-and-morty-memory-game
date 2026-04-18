@@ -5,7 +5,7 @@ import { StarfieldBackground } from "@/shared/ui/StarfieldBackground";
 export function AuthLayout({ children }: Readonly<{ children: ReactNode }>) {
 	return (
 		<StarfieldBackground>
-			<div className="flex flex-col items-center justify-center min-h-screen px-4">
+			<div className="flex flex-col items-center justify-center min-h-dvh px-4">
 				<div className="mb-8 text-center">
 					<img src={logo} alt="Rick and Morty" className="h-20 mx-auto mb-2" />
 					<p className="text-white/50 mt-1">Juego de Memoria</p>

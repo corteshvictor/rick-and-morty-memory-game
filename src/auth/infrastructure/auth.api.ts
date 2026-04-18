@@ -68,9 +68,17 @@ export function createSupabaseAuthGateway(): AuthGateway {
 			if (error) return { error: error.message };
 			if (!data.url) return { error: "No se pudo iniciar la autenticación." };
 
+			// Prefetch para detectar si el proveedor OAuth no está habilitado en Supabase
+			// antes de redirigir al usuario. Cuando el proveedor SÍ está habilitado,
+			// Supabase responde con un 302 hacia Google/GitHub. El navegador sigue ese
+			// redirect dentro del fetch, pero el servidor OAuth (Google, etc.) no envía
+			// cabeceras CORS, así que el fetch falla con un "CORS error" en la pestaña
+			// Network. Esto es esperado y no es un problema: el catch lo ignora y la
+			// redirección real se hace con `location.href` más abajo (navegación completa,
+			// no sujeta a CORS).
 			try {
-				const res = await fetch(data.url);
-				if (!res.ok) {
+				const res = await fetch(data.url, { redirect: "manual" });
+				if (res.type !== "opaqueredirect" && !res.ok) {
 					const body = await res.json().catch(() => null);
 					const msg = body?.msg ?? body?.error_description;
 					if (msg?.includes("provider is not enabled")) {

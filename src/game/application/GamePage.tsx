@@ -6,7 +6,7 @@ import { Spinner } from "@/shared/ui/Spinner";
 import { GameBoard } from "./GameBoard";
 import { GameHeader } from "./GameHeader";
 import { GameOverModal } from "./GameOverModal";
-import { ModeSelector } from "./ModeSelector";
+import { GameSettings } from "./GameSettings";
 import { useGame } from "./useGame";
 
 export function GamePage() {
@@ -26,10 +26,11 @@ export function GamePage() {
 		mode,
 		versus,
 		winner,
-		showModeSelector,
-		selectSingleMode,
-		selectVersusMode,
-		changeMode,
+		showSettings,
+		difficulty,
+		shuffleSwaps,
+		startWithSettings,
+		openSettings,
 	} = useGame();
 
 	useEffect(() => {
@@ -37,12 +38,15 @@ export function GamePage() {
 		notifyError({ message: error, title: "Error del juego" });
 	}, [error, errorUpdatedAt]);
 
-	if (showModeSelector) {
+	if (showSettings) {
 		return (
 			<div className="bg-amber-50 rounded-2xl p-3 sm:p-6 shadow-lg">
-				<ModeSelector
-					onSelectSingle={selectSingleMode}
-					onSelectVersus={selectVersusMode}
+				<GameSettings
+					initialMode={mode}
+					initialDifficulty={difficulty}
+					initialName1={versus?.players[0].name ?? ""}
+					initialName2={versus?.players[1].name ?? ""}
+					onStart={startWithSettings}
 				/>
 			</div>
 		);
@@ -72,6 +76,7 @@ export function GamePage() {
 		<div className="bg-amber-50 rounded-2xl p-3 sm:p-6 shadow-lg">
 			<GameHeader
 				matches={stats.matches}
+				totalPairs={stats.totalPairs}
 				turns={stats.turns}
 				onRestart={restart}
 				canRestart={phase === GAME_PHASE.PLAYING}
@@ -85,15 +90,18 @@ export function GamePage() {
 				onFlip={flipCard}
 				onShuffleComplete={endShuffle}
 				disabled={isDisabled}
+				difficulty={difficulty}
+				shuffleSwaps={shuffleSwaps}
 			/>
 			<GameOverModal
 				open={phase === GAME_PHASE.COMPLETED}
 				turns={stats.turns}
+				difficulty={difficulty}
 				onReplay={replay}
 				mode={mode}
 				winner={winner}
 				versus={versus ?? undefined}
-				onChangeMode={changeMode}
+				onOpenSettings={openSettings}
 			/>
 		</div>
 	);

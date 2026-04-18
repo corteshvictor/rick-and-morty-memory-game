@@ -9,6 +9,7 @@ import { VersusScoreboard } from "./VersusScoreboard";
 
 interface GameHeaderProps {
 	matches: number;
+	totalPairs: number;
 	turns: number;
 	onRestart: () => void;
 	canRestart: boolean;
@@ -19,6 +20,7 @@ interface GameHeaderProps {
 
 export function GameHeader({
 	matches,
+	totalPairs,
 	turns,
 	onRestart,
 	canRestart,
@@ -35,7 +37,10 @@ export function GameHeader({
 				/>
 			) : (
 				<p className="text-sm text-gray-700">
-					Aciertos: <span className="font-bold text-green-600">{matches}</span>
+					Aciertos:{" "}
+					<span className="font-bold text-green-600">
+						{matches}/{totalPairs}
+					</span>
 				</p>
 			)}
 

@@ -24,12 +24,12 @@ function renderGamePage() {
 	);
 }
 
-function selectSingleMode() {
-	fireEvent.click(screen.getByRole("button", { name: /un jugador/i }));
+function submitSettings() {
+	fireEvent.click(screen.getByRole("button", { name: /comenzar juego/i }));
 }
 
 async function advanceToPlayingPhase() {
-	selectSingleMode();
+	submitSettings();
 	await act(async () => {
 		await vi.advanceTimersByTimeAsync(100);
 	});
@@ -45,24 +45,26 @@ describe("GamePage", () => {
 
 	afterEach(() => {
 		vi.useRealTimers();
-		useGameStore.getState().reset();
+		useGameStore.getState().clear();
 	});
 
-	it("shows mode selector on initial render", () => {
+	it("shows game settings form on initial render", () => {
 		renderGamePage();
 
-		expect(screen.getByText("Modo de Juego")).toBeInTheDocument();
+		expect(screen.getByText("Configuración del juego")).toBeInTheDocument();
 		expect(
 			screen.getByRole("button", { name: /un jugador/i }),
 		).toBeInTheDocument();
+		expect(screen.getByRole("button", { name: /versus/i })).toBeInTheDocument();
+		expect(screen.getByRole("button", { name: /medio/i })).toBeInTheDocument();
 		expect(
-			screen.getByRole("button", { name: /versus/i }),
+			screen.getByRole("button", { name: /comenzar juego/i }),
 		).toBeInTheDocument();
 	});
 
 	it("shows loading spinner while fetching characters", () => {
 		renderGamePage();
-		selectSingleMode();
+		submitSettings();
 
 		expect(screen.getByText("Cargando personajes...")).toBeInTheDocument();
 	});
