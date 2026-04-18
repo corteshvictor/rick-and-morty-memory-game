@@ -1,4 +1,5 @@
 import { CARD_STATUS, type Card } from "./card.model";
+import { DEFAULT_DIFFICULTY, type DifficultyLevel } from "./difficulty.model";
 import {
 	GAME_ACTION,
 	GAME_PHASE,
@@ -24,6 +25,7 @@ export function createInitialState(): GameState {
 		stats: { turns: 0, matches: 0, totalPairs: 0 },
 		mode: DEFAULT_GAME_MODE,
 		versus: null,
+		difficulty: DEFAULT_DIFFICULTY,
 	};
 }
 
@@ -166,6 +168,17 @@ function handleMatchFailed(state: GameState): GameState {
 	};
 }
 
+function handleSelectDifficulty(
+	state: GameState,
+	difficulty: DifficultyLevel,
+): GameState {
+	if (state.phase !== GAME_PHASE.IDLE) return state;
+	return {
+		...state,
+		difficulty,
+	};
+}
+
 export function transition(state: GameState, action: GameAction): GameState {
 	switch (action.type) {
 		case GAME_ACTION.START_GAME:
@@ -181,11 +194,13 @@ export function transition(state: GameState, action: GameAction): GameState {
 		case GAME_ACTION.MATCH_FAILED:
 			return handleMatchFailed(state);
 		case GAME_ACTION.RESET:
-			return createInitialState();
+			return { ...createInitialState(), difficulty: state.difficulty };
 		case GAME_ACTION.SET_MODE:
 			return handleSetMode(state, action.mode);
 		case GAME_ACTION.SETUP_VERSUS:
 			return handleSetupVersus(state, action.name1, action.name2);
+		case GAME_ACTION.SELECT_DIFFICULTY:
+			return handleSelectDifficulty(state, action.difficulty);
 		default:
 			return state;
 	}

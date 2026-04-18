@@ -2,7 +2,6 @@ import { useEffect, useRef, useState } from "react";
 import { type Card } from "@/game/domain/card.model";
 import { GAME_PHASE, type GamePhase } from "@/game/domain/game.model";
 
-const SHUFFLE_SWAP_COUNT = 6;
 const SHUFFLE_SWAP_DURATION = 320;
 const SHUFFLE_SWAP_GAP = 80;
 const SHUFFLE_INITIAL_DELAY = 300;
@@ -47,6 +46,7 @@ export function useShuffleAnimation(
 	cards: Card[],
 	phase: GamePhase,
 	onComplete: () => void,
+	swapCount: number,
 ) {
 	const [localCards, setLocalCards] = useState<Card[]>(cards);
 	const [swapTransforms, setSwapTransforms] = useState<
@@ -84,7 +84,7 @@ export function useShuffleAnimation(
 		}
 
 		function performNextSwap() {
-			if (cancelled || completedSwaps >= SHUFFLE_SWAP_COUNT) {
+			if (cancelled || completedSwaps >= swapCount) {
 				if (!cancelled) onCompleteRef.current();
 				return;
 			}
@@ -131,7 +131,7 @@ export function useShuffleAnimation(
 			cancelled = true;
 			clearTimeout(timerId);
 		};
-	}, [phase, cards]);
+	}, [phase, cards, swapCount]);
 
 	const displayCards = phase === GAME_PHASE.SHUFFLING ? localCards : cards;
 

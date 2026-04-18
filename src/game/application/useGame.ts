@@ -1,12 +1,14 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import { generateBoard } from "@/game/domain/board-generator";
+import {
+	DIFFICULTY_CONFIGS,
+	type DifficultyLevel,
+} from "@/game/domain/difficulty.model";
 import { GAME_PHASE } from "@/game/domain/game.model";
 import { GAME_MODE } from "@/game/domain/multiplayer.model";
 import { getWinner } from "@/game/domain/turn-manager";
 import { useCharactersQuery } from "@/game/infrastructure/character.queries";
 import { useGameStore } from "./game.store";
-
-const PAIR_COUNT = 6;
 
 export function useGame() {
 	const {
@@ -15,22 +17,26 @@ export function useGame() {
 		stats,
 		mode,
 		versus,
+		difficulty,
 		startGame,
 		endShuffle,
 		flipCard,
 		reset,
 		setMode,
 		setupVersus,
+		selectDifficulty,
 	} = useGameStore();
+	const pairCount = DIFFICULTY_CONFIGS[difficulty].totalPairs;
 	const {
 		data: characters,
 		isLoading,
 		error,
 		errorUpdatedAt,
 		refetch,
-	} = useCharactersQuery(PAIR_COUNT);
+	} = useCharactersQuery(pairCount);
 	const hasStarted = useRef(false);
 	const [showModeSelector, setShowModeSelector] = useState(true);
+	const [showDifficultySelector, setShowDifficultySelector] = useState(true);
 
 	useEffect(() => {
 		reset();
@@ -44,11 +50,16 @@ export function useGame() {
 	}, [characters, startGame]);
 
 	useEffect(() => {
-		if (characters && !hasStarted.current && !showModeSelector) {
+		if (
+			characters &&
+			!hasStarted.current &&
+			!showModeSelector &&
+			!showDifficultySelector
+		) {
 			hasStarted.current = true;
 			start();
 		}
-	}, [characters, start, showModeSelector]);
+	}, [characters, start, showModeSelector, showDifficultySelector]);
 
 	const restart = useCallback(() => {
 		if (!characters) return;
@@ -81,6 +92,21 @@ export function useGame() {
 		reset();
 		hasStarted.current = false;
 		setShowModeSelector(true);
+		setShowDifficultySelector(true);
+	}, [reset]);
+
+	const handleSelectDifficulty = useCallback(
+		(level: DifficultyLevel) => {
+			selectDifficulty(level);
+			setShowDifficultySelector(false);
+		},
+		[selectDifficulty],
+	);
+
+	const changeDifficulty = useCallback(() => {
+		reset();
+		hasStarted.current = false;
+		setShowDifficultySelector(true);
 	}, [reset]);
 
 	const isDisabled =
@@ -114,5 +140,10 @@ export function useGame() {
 		selectSingleMode,
 		selectVersusMode,
 		changeMode,
+		difficulty,
+		showDifficultySelector,
+		selectDifficulty: handleSelectDifficulty,
+		changeDifficulty,
+		shuffleSwaps: DIFFICULTY_CONFIGS[difficulty].shuffleSwaps,
 	};
 }
