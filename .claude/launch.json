@@ -1,0 +1,23 @@
+{
+	"version": "0.0.1",
+	"configurations": [
+		{
+			"name": "vite-dev",
+			"runtimeExecutable": "pnpm",
+			"runtimeArgs": ["dev"],
+			"port": 5173
+		},
+		{
+			"name": "storybook",
+			"runtimeExecutable": "pnpm",
+			"runtimeArgs": ["storybook"],
+			"port": 6006
+		},
+		{
+			"name": "vite-preview",
+			"runtimeExecutable": "pnpm",
+			"runtimeArgs": ["preview"],
+			"port": 4173
+		}
+	]
+}
