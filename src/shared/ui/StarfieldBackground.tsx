@@ -8,7 +8,7 @@ export function StarfieldBackground({
 	children,
 }: Readonly<StarfieldBackgroundProps>) {
 	return (
-		<div className="starfield-bg relative min-h-screen overflow-hidden">
+		<div className="starfield-bg relative min-h-dvh overflow-hidden">
 			{/* Capa 0: Gradiente galactico base */}
 			<div className="galaxy-base" aria-hidden="true" />
 
@@ -32,7 +32,7 @@ export function StarfieldBackground({
 			<div className="shooting-star shooting-star-5" aria-hidden="true" />
 
 			{/* Capa 6: Contenido */}
-			<div className="relative z-10 min-h-screen">{children}</div>
+			<div className="relative z-10 min-h-dvh">{children}</div>
 		</div>
 	);
 }

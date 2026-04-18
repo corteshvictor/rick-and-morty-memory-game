@@ -17,7 +17,7 @@ export function AuthGuard({ children }: Readonly<{ children: ReactNode }>) {
 	if (status === AUTH_STATUS.LOADING) {
 		return (
 			<StarfieldBackground>
-				<div className="flex items-center justify-center min-h-screen">
+				<div className="flex items-center justify-center min-h-dvh">
 					<Spinner className="text-green-500" />
 				</div>
 			</StarfieldBackground>
