@@ -10,7 +10,11 @@ import {
 	GAME_PHASE,
 	type GameState,
 } from "@/game/domain/game.model";
-import { createInitialState, transition } from "@/game/domain/game-engine";
+import {
+	createInitialState,
+	createStateBackToSettings,
+	transition,
+} from "@/game/domain/game-engine";
 import { type GameMode, PLAYER_ID } from "../domain/multiplayer.model";
 
 interface GameStore extends GameState {
@@ -108,8 +112,7 @@ export const useGameStore = create<GameStore>((set, get) => ({
 
 	backToSettings: () => {
 		clearPreviewTimer();
-		const { mode, versus, difficulty } = get();
-		set({ ...createInitialState(), mode, versus, difficulty });
+		set(createStateBackToSettings(get()));
 	},
 
 	setMode: (mode) => {

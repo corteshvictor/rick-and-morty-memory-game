@@ -29,6 +29,15 @@ export function createInitialState(): GameState {
 	};
 }
 
+export function createStateBackToSettings(current: GameState): GameState {
+	return {
+		...createInitialState(),
+		mode: current.mode,
+		versus: current.versus,
+		difficulty: current.difficulty,
+	};
+}
+
 function handleSetMode(state: GameState, mode: GameMode): GameState {
 	if (state.phase !== GAME_PHASE.IDLE) return state;
 	return {
